@@ -14,6 +14,7 @@ def main():
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+    glTranslatef(0.0, 0.0, -3) #Must push the camera because it spawns inside the cube
 
     while True:
         for event in pygame.event.get():
