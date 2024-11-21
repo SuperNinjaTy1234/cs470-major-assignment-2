@@ -22,13 +22,30 @@ yellow_line_edges = (
 )
 
 def draw_road():
+    draw_road_plane()
+    draw_road_intersection()
+
+def draw_side_walk():
+    side_walk()
+
+    glPushMatrix()
+    glTranslatef(-30, 0, 0)
+    side_walk()
+    glPopMatrix()
+
+def draw_road_plane():
     side_walk()
     road_plane()
     draw_yellow_lines()
 
-def draw_yellow_lines():
-    yellow_line()
+    glPushMatrix()
+    glTranslate(-30, 0, 0)
+    side_walk()
+    road_plane()
+    draw_yellow_lines()
+    glPopMatrix()
 
+def draw_yellow_lines():
     for x in range(4):
         glPushMatrix()
         glTranslate(4 * x, 0, 0)
@@ -40,6 +57,34 @@ def draw_yellow_lines():
         glTranslate(-4 * x, 0, 0)
         yellow_line()
         glPopMatrix()
+
+def draw_road_intersection():
+    glPushMatrix()
+    glTranslate(-45, 0, 0)
+    side_walk()
+    glRotatef(90, 0, 1, 0) #Rotate to set other side_walk plane
+    side_walk()
+    glRotate(-90, 0, 1, 0) #Rotate back to continue as normal
+    road_plane()
+    draw_yellow_lines()
+    glRotatef(90, 0, 1, 0)
+    road_plane()
+    draw_yellow_lines()
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(30, 0, 0)
+    side_walk()
+    glRotatef(90, 0, 1, 0)  # Rotate to set other side_walk plane
+    side_walk()
+    glRotate(-90, 0, 1, 0)  # Rotate back to continue as normal
+    road_plane()
+    draw_yellow_lines()
+    glRotatef(90, 0, 1, 0)
+    road_plane()
+    draw_yellow_lines()
+    glPopMatrix()
+
 
 def road_plane():
     glBegin(GL_QUADS)
