@@ -7,6 +7,7 @@ from OpenGL.GL import *
 #imports of specific models
 from ground_plane import *
 from houses import *
+from roads import *
 
 
 def main():
@@ -19,6 +20,8 @@ def main():
 
     move_on_x = 0
     move_on_y = 0
+    move_on_z = 0
+    rotate = 0
 
     while True:
         for event in pygame.event.get():
@@ -31,26 +34,47 @@ def main():
                 elif event.key == pygame.K_d:
                     move_on_x = -1
                 elif event.key == pygame.K_s:
-                    move_on_y = 1
+                    move_on_z = -1
                 elif event.key == pygame.K_w:
+                    move_on_z = 1
+                elif event.key == pygame.K_r:
+                    rotate = 1
+                elif event.key == pygame.K_l:
+                    rotate = -1
+                elif event.key == pygame.K_UP:
                     move_on_y = -1
+                elif event.key == pygame.K_DOWN:
+                    move_on_y = 1
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     move_on_x = 0
                 elif event.key == pygame.K_d:
                     move_on_x = 0
                 elif event.key == pygame.K_s:
-                    move_on_y = 0
+                    move_on_z = 0
                 elif event.key == pygame.K_w:
+                    move_on_z = 0
+                elif event.key == pygame.K_r:
+                    rotate = 0
+                elif event.key == pygame.K_l:
+                    rotate = 0
+                elif event.key == pygame.K_UP:
+                    move_on_y = 0
+                elif event.key == pygame.K_DOWN:
                     move_on_y = 0
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         ground()
-        cube()
-        #test_house()
+        draw_road()
+        test_house()
 
-        glTranslatef(move_on_x, move_on_y, 0)
+
+        glTranslatef(move_on_x, move_on_y, move_on_z)
+
+        #For some reason, this makes the camera get farther and farther away
+        if rotate == 1 or rotate == -1:
+            glRotatef(10, 0, rotate, 0)
 
         pygame.display.flip()
         pygame.time.wait(75)

@@ -8,7 +8,6 @@ edges = (
 )
 
 def test_house():
-    glClear(GL_COLOR_BUFFER_BIT)
     glBegin(GL_QUADS)
     glColor3f(0, 0, 1)
 
