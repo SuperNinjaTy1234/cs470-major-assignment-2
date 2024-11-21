@@ -44,13 +44,10 @@ def main():
                 elif event.key == pygame.K_w:
                     move_on_y = 0
 
-        glPushMatrix()
-        ground()
-        glPopMatrix()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        glPushMatrix()
+        ground()
         cube()
-        glPopMatrix()
         #test_house()
 
         glTranslatef(move_on_x, move_on_y, 0)
