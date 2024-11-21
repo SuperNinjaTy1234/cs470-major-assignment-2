@@ -17,15 +17,37 @@ def main():
     glTranslatef(0.0, 0.0, -10) #Must push the camera because it spawns inside the cube
     glRotatef(15, 1, 0, 0)
 
+    move_on_x = 0
+    move_on_y = 0
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    move_on_x = 1
+                elif event.key == pygame.K_d:
+                    move_on_x = -1
+                elif event.key == pygame.K_s:
+                    move_on_y = 1
+                elif event.key == pygame.K_w:
+                    move_on_y = -1
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    move_on_x = 0
+                elif event.key == pygame.K_d:
+                    move_on_x = 0
+                elif event.key == pygame.K_s:
+                    move_on_y = 0
+                elif event.key == pygame.K_w:
+                    move_on_y = 0
 
         ground()
         #test_house()
 
+        glTranslatef(move_on_x, move_on_y, 0)
 
         pygame.display.flip()
         pygame.time.wait(75)
