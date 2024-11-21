@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 #imports of specific models
-from ground_plane import ground
+from ground_plane import *
 from houses import *
 
 
@@ -44,7 +44,13 @@ def main():
                 elif event.key == pygame.K_w:
                     move_on_y = 0
 
+        glPushMatrix()
         ground()
+        glPopMatrix()
+
+        glPushMatrix()
+        cube()
+        glPopMatrix()
         #test_house()
 
         glTranslatef(move_on_x, move_on_y, 0)
