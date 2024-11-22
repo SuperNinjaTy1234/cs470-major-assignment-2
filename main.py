@@ -1,10 +1,10 @@
-#The main file of the program
+# The main file of the program
 import pygame
 from pygame.locals import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
-#imports of specific models
+# imports of specific models
 from ground_plane import *
 from houses import *
 from roads import *
@@ -67,7 +67,7 @@ def main():
 
         ground()
         draw_road()
-        test_house()
+        draw_house()
 
 
         glTranslatef(move_on_x, move_on_y, move_on_z)
