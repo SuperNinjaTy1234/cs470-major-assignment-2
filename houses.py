@@ -1,18 +1,101 @@
 from OpenGL.GL import *
 
-edges = (
-    (-0.5, 0.5, 0),
-    (-0.5, -0.5, 0),
-    (0.5, -0.5, 0),
-    (0.5, 0.5, 0)
-)
+def draw_house():
+    #glEnable(GL_DEPTH_TEST)
+    #glDepthFunc(GL_LESS)
 
-def test_house():
+    # Main house structure
     glBegin(GL_QUADS)
-    glColor3f(0, 0, 1)
+    glColor3f(0.96, 0.96, 0.86)  # Pale Beige color for the wall
 
-    for edge in edges:
-        glVertex3fv(edge)
+    # Front face
+    glVertex3f(-1, -1, 1)
+    glVertex3f(1, -1, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(-1, 1, 1)
+
+    # Back face
+    glVertex3f(-1, -1, -1)
+    glVertex3f(1, -1, -1)
+    glVertex3f(1, 1, -1)
+    glVertex3f(-1, 1, -1)
+
+    # Right face
+    glVertex3f(1, -1, -1)
+    glVertex3f(1, -1, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(1, 1, -1)
+
+    # Left face
+    glVertex3f(-1, -1, -1)
+    glVertex3f(-1, -1, 1)
+    glVertex3f(-1, 1, 1)
+    glVertex3f(-1, 1, -1)
+
+    # Bottom face (floor)
+    glVertex3f(-1, -1, -1)
+    glVertex3f(1, -1, -1)
+    glVertex3f(1, -1, 1)
+    glVertex3f(-1, -1, 1)
 
     glEnd()
-    glFlush()
+
+    # Roof
+    glBegin(GL_TRIANGLES)
+    glColor3f(0.8, 0.8, 0.8)  # Light Grey color for the roof
+    # Right side
+    glVertex3f(-1, 1, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(0, 2, 0)
+
+    glVertex3f(-1, 1, -1)
+    glVertex3f(1, 1, -1)
+    glVertex3f(0, 2, 0)
+
+    # Left side
+    glVertex3f(-1, 1, 1)
+    glVertex3f(-1, 1, -1)
+    glVertex3f(0, 2, 0)
+
+    glVertex3f(1, 1, 1)
+    glVertex3f(1, 1, -1)
+    glVertex3f(0, 2, 0)
+    glEnd()
+
+    # Doors
+    glBegin(GL_QUADS)
+    glColor3f(0.5, 0.1, 0.1)
+    # Front door
+    glVertex3f(-0.2, -1, 1.1)
+    glVertex3f(0.2, -1, 1.1)
+    glVertex3f(0.2, -0.2, 1.1)
+    glVertex3f(-0.2, -0.2, 1.1)
+
+    # Back door
+    glVertex3f(-0.2, -1, -1.1)
+    glVertex3f(0.2, -1, -1.1)
+    glVertex3f(0.2, -0.2, -1.1)
+    glVertex3f(-0.2, -0.2, -1.1)
+    glEnd()
+
+    # Windows
+    glColor4f(0, 0, 0, 0)
+    glBegin(GL_QUADS)
+    # Left Window
+    glVertex3f(-0.9, 0, 0.8)
+    glVertex3f(-0.6, 0, 0.8)
+    glVertex3f(-0.6, 0.3, 0.8)
+    glVertex3f(-0.9, 0.3, 0.8)
+    # Right Window
+    glVertex3f(0.6, 0, 0.8)
+    glVertex3f(0.9, 0, 0.8)
+    glVertex3f(0.9, 0.3, 0.8)
+    glVertex3f(0.6, 0.3, 0.8)
+    glEnd()
+
+def test_house():
+    glPushMatrix()
+    glTranslatef(0, 0, -10)  # Move the house further from the camera
+    draw_house()
+    glPopMatrix()
+

@@ -1,3 +1,4 @@
+
 #The main file of the program
 import pygame
 from pygame.locals import *
