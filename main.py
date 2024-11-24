@@ -7,6 +7,7 @@ from OpenGL.GL import *
 
 #imports of specific models
 from ground_plane import *
+from body_of_water import *
 from houses import *
 from roads import *
 
@@ -71,6 +72,7 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         ground()
+        draw_water_plane()
         draw_road()
         test_house()
 

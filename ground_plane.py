@@ -1,5 +1,5 @@
 # CREDIT:
-# The grass texture used in this project was created by Snabisch on OpenGameArt.org
+# The grass texture used in this project was created by cron on OpenGameArt.org
 # Link: https://opengameart.org/content/free-tiling-3d-grass-texture
 # license: CC-BY 4.0, CC-BY 3.0, OGA-BY 3.0
 # NOTE: No changes were made to the texture used
