@@ -1,8 +1,6 @@
 from OpenGL.GL import *
 
 def draw_house():
-    #glEnable(GL_DEPTH_TEST)
-    #glDepthFunc(GL_LESS)
 
     glEnable(GL_COLOR_MATERIAL)  # Enable material coloring
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)

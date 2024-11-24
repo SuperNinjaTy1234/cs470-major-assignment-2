@@ -1,4 +1,3 @@
-
 #The main file of the program
 import pygame
 from pygame.locals import *
@@ -10,17 +9,22 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
-
+from light import setup_daylight, setup_nightlight
+from background import load_texture, draw_background
 
 def main():
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
-    glTranslatef(0.0, 0.0, -10) #Must push the camera because it spawns inside the cube
+    gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
+    glTranslatef(0.0, 0.0, -10)   #Must push the camera because it spawns inside the cube
     glRotatef(15, 1, 0, 0)
 
-    #Enabled features
+    bg_texture = load_texture("Textures/mountain.jpg")  # Load the mountain texture
+
+    setup_daylight()  # Start with daylight
+
+    # Enabled features
     glEnable(GL_DEPTH_TEST)
     glDepthFunc(GL_LESS)
 
@@ -28,8 +32,24 @@ def main():
     move_on_y = 0
     move_on_z = 0
     rotate = 0
+    is_daytime = True  # Lighting state
 
     while True:
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()
+        glTranslatef(0.0, 0.0, -10)
+
+        draw_background(bg_texture)  # Draw the background first
+
+        glTranslatef(move_on_x, move_on_y, move_on_z)
+        if rotate:
+            glRotatef(10, 0, rotate, 0)
+
+        ground()
+        draw_water_plane()
+        draw_road()
+        test_house()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -39,51 +59,37 @@ def main():
                     move_on_x = 1
                 elif event.key == pygame.K_d:
                     move_on_x = -1
-                elif event.key == pygame.K_s:
+                elif event.key is pygame.K_s:
                     move_on_z = -1
-                elif event.key == pygame.K_w:
+                elif event.key is pygame.K_w:
                     move_on_z = 1
-                elif event.key == pygame.K_r:
+                elif event.key is pygame.K_r:
                     rotate = 1
-                elif event.key == pygame.K_l:
+                elif event.key is pygame.K_l:
                     rotate = -1
-                elif event.key == pygame.K_UP:
+                elif event.key is pygame.K_UP:
                     move_on_y = -1
-                elif event.key == pygame.K_DOWN:
+                elif event.key is pygame.K_DOWN:
                     move_on_y = 1
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_a:
+                elif event.key is pygame.K_t:  # Toggle lighting
+                    is_daytime = not is_daytime
+                    if is_daytime:
+                        setup_daylight()
+                    else:
+                        setup_nightlight()
+
+            if event.type is pygame.KEYUP:
+                if event.key in (pygame.K_a, pygame.K_d):
                     move_on_x = 0
-                elif event.key == pygame.K_d:
-                    move_on_x = 0
-                elif event.key == pygame.K_s:
+                if event.key in (pygame.K_s, pygame.K_w):
                     move_on_z = 0
-                elif event.key == pygame.K_w:
-                    move_on_z = 0
-                elif event.key == pygame.K_r:
+                if event.key in (pygame.K_r, pygame.K_l):
                     rotate = 0
-                elif event.key == pygame.K_l:
-                    rotate = 0
-                elif event.key == pygame.K_UP:
+                if event.key in (pygame.K_UP, pygame.K_DOWN):
                     move_on_y = 0
-                elif event.key == pygame.K_DOWN:
-                    move_on_y = 0
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-        ground()
-        draw_water_plane()
-        draw_road()
-        test_house()
-
-
-        glTranslatef(move_on_x, move_on_y, move_on_z)
-
-        #For some reason, this makes the camera get farther and farther away
-        if rotate == 1 or rotate == -1:
-            glRotatef(10, 0, rotate, 0)
 
         pygame.display.flip()
         pygame.time.wait(75)
 
-main()
+if __name__ == "__main__":
+    main()
