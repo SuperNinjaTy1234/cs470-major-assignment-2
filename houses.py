@@ -95,7 +95,7 @@ def draw_house():
 
 def test_house():
     glPushMatrix()
-    glTranslatef(0, 0, -10)  # Move the house further from the camera
+    glTranslatef(0, 1, -10)  # Move the house further from the camera
     draw_house()
     glPopMatrix()
 

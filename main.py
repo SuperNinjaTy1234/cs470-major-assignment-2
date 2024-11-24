@@ -19,6 +19,9 @@ def main():
     glTranslatef(0.0, 0.0, -10) #Must push the camera because it spawns inside the cube
     glRotatef(15, 1, 0, 0)
 
+    glEnable(GL_DEPTH_TEST)
+    #glDepthFunc(GL_LESS)
+
     move_on_x = 0
     move_on_y = 0
     move_on_z = 0
