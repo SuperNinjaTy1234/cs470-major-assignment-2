@@ -16,8 +16,8 @@ edges = (
 
 tex_edges = (
     (0, 0),
-    (0, 10),
-    (10, 10),
+    (0, 1),
+    (10, 1),
     (10, 0)
 )
 
@@ -43,7 +43,7 @@ def water_plane():
 
     glBegin(GL_QUADS)
 
-    glColor3f(0, 0, 1)
+    glColor3f(1, 1, 1)
 
     for edge, tex_edge in zip(edges, tex_edges):
         glTexCoord2f(tex_edge[0], tex_edge[1])
