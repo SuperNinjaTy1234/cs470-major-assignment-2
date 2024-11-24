@@ -24,7 +24,7 @@ tex_edges = (
 def ground():
     #Texture variables
     glEnable(GL_TEXTURE_2D)
-    grass_texture = pygame.image.load('Textures/grassy_d.png')
+    grass_texture = pygame.image.load('Textures/cron/grassy_d.png')
     grass_texture_data = pygame.image.tostring(grass_texture, 'RGBA', True)
     grass_texture_id = glGenTextures(1)
 
