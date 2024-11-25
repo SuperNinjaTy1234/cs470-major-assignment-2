@@ -1,13 +1,17 @@
-# The main file of the program
+
+#The main file of the program
 import pygame
 from pygame.locals import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
-# imports of specific models
+#imports of specific models
 from ground_plane import *
+from body_of_water import *
 from houses import *
 from roads import *
+from light import setup_daylight, setup_nightlight
+from background import load_texture, draw_background
 
 
 def main():
@@ -18,10 +22,19 @@ def main():
     glTranslatef(0.0, 0.0, -10) #Must push the camera because it spawns inside the cube
     glRotatef(15, 1, 0, 0)
 
+    bg_texture = load_texture("Textures/mountain.jpg")  # Load the mountain texture
+
+    setup_daylight()  # Start with daylight
+
+    #Enabled features
+    glEnable(GL_DEPTH_TEST)
+    glDepthFunc(GL_LESS)
+
     move_on_x = 0
     move_on_y = 0
     move_on_z = 0
     rotate = 0
+    is_daytime = True  # Lighting state
 
     while True:
         for event in pygame.event.get():
@@ -45,6 +58,12 @@ def main():
                     move_on_y = -1
                 elif event.key == pygame.K_DOWN:
                     move_on_y = 1
+                elif event.key is pygame.K_t:  # Toggle lighting
+                    is_daytime = not is_daytime
+                    if is_daytime:
+                        setup_daylight()
+                    else:
+                        setup_nightlight()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     move_on_x = 0
@@ -66,8 +85,11 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         ground()
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        draw_water_plane()
+        glPopAttrib()
         draw_road()
-        draw_house()
+        test_house()
 
 
         glTranslatef(move_on_x, move_on_y, move_on_z)

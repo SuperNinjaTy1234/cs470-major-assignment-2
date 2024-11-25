@@ -1,98 +1,102 @@
 from OpenGL.GL import *
 
-# Garage door animation variables
-# garage_door_position = 0
-# garage_door_opening = False
-
-
-def draw_wall():
-    # Draw a single wall.
-    glBegin(GL_QUADS)
-    glColor3f(0.8, 0.5, 0.3)  # Brown for walls
-    glVertex3f(-5, 0, 0)  # Bottom left
-    glVertex3f(5, 0, 0)   # Bottom right
-    glVertex3f(5, 5, 0)   # Top right
-    glVertex3f(-5, 5, 0)  # Top left
-    glEnd()
-
-
-def draw_garage_door():
-    # Draw the garage door.
-    glPushMatrix()
-
-    glBegin(GL_QUADS)
-    glColor3f(0.9, 0.9, 0.9)  # Light gray for garage door
-    glVertex3f(-2.5, 0, 0)  # Bottom left
-    glVertex3f(2.5, 0, 0)   # Bottom right
-    glVertex3f(2.5, 2.5, 0)  # Top right
-    glVertex3f(-2.5, 2.5, 0)  # Top left
-    glEnd()
-    glPopMatrix()
-
-
-def draw_roof():
-    # Draw the roof as a triangular prism.
-    glBegin(GL_TRIANGLES)
-    glColor3f(0.5, 0.2, 0.1)  # Dark brown for roof
-    glVertex3f(-5, 5, 5)   # Front left
-    glVertex3f(5, 5, 5)    # Front right
-    glVertex3f(0, 7.5, 0)  # Peak
-    glVertex3f(-5, 5, -5)  # Back left
-    glVertex3f(5, 5, -5)   # Back right
-    glVertex3f(0, 7.5, 0)  # Peak
-    glEnd()
-
-
-def draw_window():
-    # Draw a single window.
-    glBegin(GL_QUADS)
-    glColor3f(0.5, 0.8, 1.0)  # Light blue for windows
-    glVertex3f(-1, 3.5, 0)   # Bottom left
-    glVertex3f(1, 3.5, 0)    # Bottom right
-    glVertex3f(1, 4.5, 0)    # Top right
-    glVertex3f(-1, 4.5, 0)   # Top left
-    glEnd()
-
-
 def draw_house():
-    # Assemble the house using transformations.
-    glPushMatrix()
 
-    # Front wall with garage door and window
-    glPushMatrix()
-    glTranslatef(0, 0, 5)  # Position the front wall
-    draw_wall()
-    draw_garage_door()
-    glPushMatrix()
-    glTranslatef(-3, 0, 0)  # Position the window on the wall
-    draw_window()
-    glPopMatrix()
-    glPopMatrix()
+    glEnable(GL_COLOR_MATERIAL)  # Enable material coloring
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
 
-    # Back wall
-    glPushMatrix()
-    glTranslatef(0, 0, -5)  # Position the back wall
-    draw_wall()
-    glPopMatrix()
+    # Main house structure
+    glBegin(GL_QUADS)
+    glColor3f(0.96, 0.96, 0.86)  # Pale Beige color for the wall
 
-    # Left wall
-    glPushMatrix()
-    glTranslatef(-5, 0, 0)  # Position the left wall
-    glRotatef(90, 0, 1, 0)  # Rotate to make it a side wall
-    draw_wall()
-    glPopMatrix()
+    # Front face
+    glVertex3f(-1, -1, 1)
+    glVertex3f(1, -1, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(-1, 1, 1)
 
-    # Right wall
-    glPushMatrix()
-    glTranslatef(5, 0, 0)  # Position the right wall
-    glRotatef(90, 0, 1, 0)  # Rotate to make it a side wall
-    draw_wall()
-    glPopMatrix()
+    # Back face
+    glVertex3f(-1, -1, -1)
+    glVertex3f(1, -1, -1)
+    glVertex3f(1, 1, -1)
+    glVertex3f(-1, 1, -1)
+
+    # Right face
+    glVertex3f(1, -1, -1)
+    glVertex3f(1, -1, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(1, 1, -1)
+
+    # Left face
+    glVertex3f(-1, -1, -1)
+    glVertex3f(-1, -1, 1)
+    glVertex3f(-1, 1, 1)
+    glVertex3f(-1, 1, -1)
+
+    # Bottom face (floor)
+    glVertex3f(-1, -1, -1)
+    glVertex3f(1, -1, -1)
+    glVertex3f(1, -1, 1)
+    glVertex3f(-1, -1, 1)
+
+    glEnd()
 
     # Roof
-    draw_roof()
+    glBegin(GL_TRIANGLES)
+    glColor3f(0.8, 0.8, 0.8)  # Light Grey color for the roof
+    # Right side
+    glVertex3f(-1, 1, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(0, 2, 0)
 
+    glVertex3f(-1, 1, -1)
+    glVertex3f(1, 1, -1)
+    glVertex3f(0, 2, 0)
+
+    # Left side
+    glVertex3f(-1, 1, 1)
+    glVertex3f(-1, 1, -1)
+    glVertex3f(0, 2, 0)
+
+    glVertex3f(1, 1, 1)
+    glVertex3f(1, 1, -1)
+    glVertex3f(0, 2, 0)
+    glEnd()
+
+    # Doors
+    glBegin(GL_QUADS)
+    glColor3f(0.5, 0.1, 0.1)
+    # Front door
+    glVertex3f(-0.2, -1, 1.1)
+    glVertex3f(0.2, -1, 1.1)
+    glVertex3f(0.2, -0.2, 1.1)
+    glVertex3f(-0.2, -0.2, 1.1)
+
+    # Back door
+    glVertex3f(-0.2, -1, -1.1)
+    glVertex3f(0.2, -1, -1.1)
+    glVertex3f(0.2, -0.2, -1.1)
+    glVertex3f(-0.2, -0.2, -1.1)
+    glEnd()
+
+    # Windows
+    glColor4f(0, 0, 0, 0)
+    glBegin(GL_QUADS)
+    # Left Window
+    glVertex3f(-0.9, 0, 0.8)
+    glVertex3f(-0.6, 0, 0.8)
+    glVertex3f(-0.6, 0.3, 0.8)
+    glVertex3f(-0.9, 0.3, 0.8)
+    # Right Window
+    glVertex3f(0.6, 0, 0.8)
+    glVertex3f(0.9, 0, 0.8)
+    glVertex3f(0.9, 0.3, 0.8)
+    glVertex3f(0.6, 0.3, 0.8)
+    glEnd()
+
+def test_house():
+    glPushMatrix()
+    glTranslatef(0, 1, -10)  # Move the house further from the camera
+    draw_house()
     glPopMatrix()
 
-
-# def animate_garage_door():
