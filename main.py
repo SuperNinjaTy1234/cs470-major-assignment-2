@@ -10,7 +10,7 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
-from light import setup_daylight, setup_nightlight
+from light import setup_daylight, setup_nightlight, enable_nighttime_lighting, enable_daytime_lighting
 from background import load_texture, draw_background
 
 
@@ -66,9 +66,9 @@ def main():
                 elif event.key is pygame.K_t:  # Toggle lighting
                     is_daytime = not is_daytime
                     if is_daytime:
-                        setup_daylight()
+                        enable_daytime_lighting()
                     else:
-                        setup_nightlight()
+                        enable_nighttime_lighting()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     move_on_x = 0
