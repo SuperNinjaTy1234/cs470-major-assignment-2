@@ -34,6 +34,7 @@ def main():
     move_on_y = 0
     move_on_z = 0
     rotate = 0
+    rotate_up_or_down = 0
     is_daytime = True  # Lighting state
 
     while True:
@@ -54,6 +55,10 @@ def main():
                     rotate = 1
                 elif event.key == pygame.K_l:
                     rotate = -1
+                elif event.key == pygame.K_m: #rotates camera up (pans up)
+                    rotate_up_or_down = 1
+                elif event.key == pygame.K_n: #rotates camera down (pans down)
+                    rotate_up_or_down = -1
                 elif event.key == pygame.K_UP:
                     move_on_y = -1
                 elif event.key == pygame.K_DOWN:
@@ -77,6 +82,10 @@ def main():
                     rotate = 0
                 elif event.key == pygame.K_l:
                     rotate = 0
+                elif event.key == pygame.K_m:
+                    rotate_up_or_down = 0
+                elif event.key == pygame.K_n:
+                    rotate_up_or_down = 0
                 elif event.key == pygame.K_UP:
                     move_on_y = 0
                 elif event.key == pygame.K_DOWN:
@@ -97,6 +106,9 @@ def main():
         #For some reason, this makes the camera get farther and farther away
         if rotate == 1 or rotate == -1:
             glRotatef(10, 0, rotate, 0)
+
+        if rotate_up_or_down == 1 or rotate_up_or_down == -1:
+            glRotatef(10, rotate_up_or_down, 0, 0)
 
         pygame.display.flip()
         pygame.time.wait(75)
