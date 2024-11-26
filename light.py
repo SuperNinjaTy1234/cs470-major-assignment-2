@@ -44,13 +44,13 @@ def setup_house_light1():
     glEnable(GL_LIGHT1)
 
     # Set up light color (ambient, diffuse, specular)
-    glLightfv(GL_LIGHT1, GL_AMBIENT, (0.5, 0.5, 0.5, 1))
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, (1, 1, 1, 1))
-    glLightfv(GL_LIGHT1, GL_SPECULAR, (1, 1, 1, 1))
+    #glLightfv(GL_LIGHT1, GL_AMBIENT, (0.5, 0.5, 0.5, 1))
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, (0.5, 0.5, 0.5, 0.5))
+    #glLightfv(GL_LIGHT1, GL_SPECULAR, (1, 1, 1, 1))
 
     # Position the light (x, y, z, w)
     # w is 0 for directional light (sun), 1 for point light
-    glLightfv(GL_LIGHT1, GL_POSITION, (-10, -10, 0, 1))
+    glLightfv(GL_LIGHT1, GL_POSITION, (0, 2, 10, 1))
 
     # Setup global ambient light
     #glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.2, 0.2, 0.2, 1))
