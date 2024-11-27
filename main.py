@@ -100,6 +100,11 @@ def main():
         glPopAttrib()
         draw_road()
         house()
+        house2()
+        house3()
+        house4()
+        house5()
+        house6()
         draw_imported_models()
 
 
