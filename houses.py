@@ -9,11 +9,23 @@ def draw_house():
     glBegin(GL_QUADS)
     glColor3f(0.96, 0.96, 0.86)  # Pale Beige color for the wall
 
-    # Front face
+    # Bottom section of the front face
     glVertex3f(-1, -1, 1)
     glVertex3f(1, -1, 1)
-    glVertex3f(1, 1, 1)
+    glVertex3f(1, 0, 1)
+    glVertex3f(-1, 0, 1)
+
+    # Top-left section of the front face
+    glVertex3f(-1, 0, 1)
+    glVertex3f(0.25, 0, 1)
+    glVertex3f(0.25, 1, 1)
     glVertex3f(-1, 1, 1)
+
+    # Top-right section of the front face
+    glVertex3f(0.75, 0, 1)
+    glVertex3f(1, 0, 1)
+    glVertex3f(1, 1, 1)
+    glVertex3f(0.75, 1, 1)
 
     # Back face
     glVertex3f(-1, -1, -1)
@@ -103,11 +115,23 @@ def draw_house4():
     glBegin(GL_QUADS)
     glColor3f(0.8, 0.8, 0.85)  # Pale Beige color for the wall
 
-    # Front face
+    # Bottom section of the front face
     glVertex3f(-2, -2, 2)
     glVertex3f(2, -2, 2)
-    glVertex3f(2, 2, 2)
+    glVertex3f(2, 0, 2)
+    glVertex3f(-2, 0, 2)
+
+    # Top-left section of the front face
+    glVertex3f(-2, 0, 2)
+    glVertex3f(0.5, 0, 2)
+    glVertex3f(0.5, 2, 2)
     glVertex3f(-2, 2, 2)
+
+    # Top-right section of the front face
+    glVertex3f(1.5, 0, 2)
+    glVertex3f(2, 0, 2)
+    glVertex3f(2, 2, 2)
+    glVertex3f(1.5, 2, 2)
 
     # Back face
     glVertex3f(-2, -2, -2)
@@ -161,10 +185,10 @@ def draw_house4():
     glBegin(GL_QUADS)
     glColor3f(0.5, 0.1, 0.1)
     # Front door
-    glVertex3f(-0.4, -2, 2.2)
-    glVertex3f(0.4, -2, 2.2)
-    glVertex3f(0.4, -0.4, 2.2)
-    glVertex3f(-0.4, -0.4, 2.2)
+    glVertex3f(-0.5, -2, 2.2)
+    glVertex3f(0.5, -2, 2.2)
+    glVertex3f(0.5, -0.4, 2.2)
+    glVertex3f(-0.5, -0.4, 2.2)
 
     # Back door
     glVertex3f(-0.4, -2, -2.2)
