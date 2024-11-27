@@ -10,7 +10,8 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
-from light import setup_daylight, setup_nightlight
+from imported_models import *
+from light import setup_daylight, setup_nightlight, enable_nighttime_lighting, enable_daytime_lighting
 from background import load_texture, draw_background
 
 
@@ -34,6 +35,7 @@ def main():
     move_on_y = 0
     move_on_z = 0
     rotate = 0
+    rotate_up_or_down = 0
     is_daytime = True  # Lighting state
 
     while True:
@@ -54,6 +56,10 @@ def main():
                     rotate = 1
                 elif event.key == pygame.K_l:
                     rotate = -1
+                elif event.key == pygame.K_m: #rotates camera up (pans up)
+                    rotate_up_or_down = 1
+                elif event.key == pygame.K_n: #rotates camera down (pans down)
+                    rotate_up_or_down = -1
                 elif event.key == pygame.K_UP:
                     move_on_y = -1
                 elif event.key == pygame.K_DOWN:
@@ -61,9 +67,9 @@ def main():
                 elif event.key is pygame.K_t:  # Toggle lighting
                     is_daytime = not is_daytime
                     if is_daytime:
-                        setup_daylight()
+                        enable_daytime_lighting()
                     else:
-                        setup_nightlight()
+                        enable_nighttime_lighting()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     move_on_x = 0
@@ -77,6 +83,10 @@ def main():
                     rotate = 0
                 elif event.key == pygame.K_l:
                     rotate = 0
+                elif event.key == pygame.K_m:
+                    rotate_up_or_down = 0
+                elif event.key == pygame.K_n:
+                    rotate_up_or_down = 0
                 elif event.key == pygame.K_UP:
                     move_on_y = 0
                 elif event.key == pygame.K_DOWN:
@@ -89,7 +99,8 @@ def main():
         draw_water_plane()
         glPopAttrib()
         draw_road()
-        test_house()
+        house()
+        draw_imported_models()
 
 
         glTranslatef(move_on_x, move_on_y, move_on_z)
@@ -97,6 +108,9 @@ def main():
         #For some reason, this makes the camera get farther and farther away
         if rotate == 1 or rotate == -1:
             glRotatef(10, 0, rotate, 0)
+
+        if rotate_up_or_down == 1 or rotate_up_or_down == -1:
+            glRotatef(10, rotate_up_or_down, 0, 0)
 
         pygame.display.flip()
         pygame.time.wait(75)
