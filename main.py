@@ -10,6 +10,7 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
+from imported_models import *
 from light import setup_daylight, setup_nightlight, enable_nighttime_lighting, enable_daytime_lighting
 from background import load_texture, draw_background
 
@@ -98,7 +99,8 @@ def main():
         draw_water_plane()
         glPopAttrib()
         draw_road()
-        test_house()
+        house()
+        draw_imported_models()
 
 
         glTranslatef(move_on_x, move_on_y, move_on_z)

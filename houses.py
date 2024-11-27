@@ -94,7 +94,7 @@ def draw_house():
     glVertex3f(0.6, 0.3, 0.8)
     glEnd()
 
-def test_house():
+def house():
     glPushMatrix()
     glTranslatef(0, 1, -10)  # Move the house further from the camera
     draw_house()
