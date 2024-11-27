@@ -2,9 +2,6 @@ from OpenGL.GL import *
 
 
 def draw_house():
-    glEnable(GL_COLOR_MATERIAL)  # Enable material coloring
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
-
     # Main house structure
     glBegin(GL_QUADS)
     glColor3f(0.96, 0.96, 0.86)  # Pale Beige color for the wall
@@ -96,8 +93,7 @@ def draw_house():
 
 
 def draw_house4():
-    glEnable(GL_COLOR_MATERIAL)  # Enable material coloring
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+
 
     # Main house structure
     glBegin(GL_QUADS)

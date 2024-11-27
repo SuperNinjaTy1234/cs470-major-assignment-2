@@ -9,6 +9,8 @@ from OpenGL.GL import *
 from ground_plane import *
 from body_of_water import *
 from houses import *
+from imported_house import draw_imported_house
+
 from roads import *
 from imported_models import *
 from light import setup_daylight, setup_nightlight, enable_nighttime_lighting, enable_daytime_lighting
@@ -30,6 +32,7 @@ def main():
     #Enabled features
     glEnable(GL_DEPTH_TEST)
     glDepthFunc(GL_LESS)
+    glEnable(GL_COLOR_MATERIAL)
 
     move_on_x = 0
     move_on_y = 0
@@ -104,8 +107,9 @@ def main():
         house3()
         house4()
         house5()
-        house6()
+
         draw_imported_models()
+        draw_imported_house()
 
 
         glTranslatef(move_on_x, move_on_y, move_on_z)
