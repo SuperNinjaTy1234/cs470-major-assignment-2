@@ -12,7 +12,8 @@ from houses import *
 from imported_house import draw_imported_house
 
 from roads import *
-from imported_models import *
+from imported_grocery_store import *
+from imported_barn import *
 from light import setup_daylight, setup_nightlight, enable_nighttime_lighting, enable_daytime_lighting
 from background import load_texture, draw_background
 
@@ -108,7 +109,8 @@ def main():
         house4()
         house5()
 
-        draw_imported_models()
+        draw_imported_grocery_store()
+        draw_imported_barn()
         draw_imported_house()
 
 

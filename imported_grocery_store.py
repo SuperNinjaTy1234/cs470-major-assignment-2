@@ -16,7 +16,7 @@ scaled_size    = 5
 scene_scale    = [scaled_size/max_scene_size for i in range(3)]
 scene_trans    = [-(scene_box[1][i]+scene_box[0][i])/2 for i in range(3)]
 
-def draw_imported_models():
+def draw_imported_grocery_store():
     glPushMatrix()
     glTranslate(-35, 1.5, -5)
     grocery_store()
