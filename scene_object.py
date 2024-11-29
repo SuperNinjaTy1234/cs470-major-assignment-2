@@ -26,6 +26,7 @@ class SceneObject:
 
         self.open = False
 
+        self.hinge_offset = (0.45, 0, 0)
     def render(self, position, rotation=(0, 0, 0), open_rotation=None):
         """
         Render the object at a given position with optional rotation.
@@ -42,7 +43,9 @@ class SceneObject:
         glRotatef(rotation[2], 0, 0, 1)
 
         if self.open and open_rotation:
+            glTranslate(*self.hinge_offset)
             glRotatef(open_rotation, 0, 1, 0)
+            glTranslate(self.hinge_offset[0], self.hinge_offset[1], self.hinge_offset[2])
 
         self._render_object()
         glPopMatrix()

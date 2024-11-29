@@ -24,14 +24,16 @@ door2 = SceneObject("Models/door2.obj", scaled_size=1.6, name="door2")
 grocery_store = SceneObject("Models/grocery_store.obj", scaled_size=5, name="grocery_store")
 barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
 street_lights = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
+barnDoor = SceneObject("Models/barnDoor.obj", scaled_size=2.3, name="door3")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
-    {"object": door1, "position": (8, 1, -5.3), "rotation": (0, 270, 0)},
+    {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
     {"object": imported_house2, "position": (-7, 2, -7), "rotation": (0, 270, 0)},
-    {"object": door2, "position": (-7, 1, -5.3), "rotation": (0, 270, 0)},
+    {"object": door2, "position": (-7, 0.9, -5.3), "rotation": (0, 270, 0)},
     {"object": grocery_store, "position": (-35, 1.5, -5), "rotation": (0, 0, 0)},
     {"object": barn, "position": (-17.5, 2.5, -10), "rotation": (0, 0, 0)},
-    {"object": street_lights, "position": (-17.5, 12.5, -10), "rotation": (0, -90, 0)}
+    {"object": street_lights, "position": (-12.5, 2.4, -10), "rotation": (0, -90, 0)},
+    {"object": barnDoor, "position": (-17, 1.1, -8.1), "rotation": (0, 0, 0)},
 ]
 
 # Had to implement major changes to camera in order for positions to work correctly
@@ -143,7 +145,7 @@ def main():
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)  # Match the minimal test
+    gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
     bg_texture = load_texture("Textures/mountain.jpg")  # Load the mountain texture
