@@ -2,6 +2,7 @@
 # The water texture used in this project was created by Aswin909 (Aswin Vos) on OpenGameArt.org
 # Link: https://opengameart.org/content/water
 # license: CC-BY-SA 3.0
+# license link: https://creativecommons.org/licenses/by/3.0/
 # NOTE: No changes were made to the texture used, but the file name was changed to "water.jpg"
 
 import pygame.image
