@@ -23,7 +23,8 @@ imported_house2 = SceneObject("Models/House2.obj", scaled_size=4, name="imported
 door2 = SceneObject("Models/door2.obj", scaled_size=1.6, name="door2")
 grocery_store = SceneObject("Models/grocery_store.obj", scaled_size=5, name="grocery_store")
 barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
-street_lights = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
+street_light1 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
+street_light2 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 barnDoor = SceneObject("Models/barnDoor.obj", scaled_size=2.3, name="door3")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
@@ -32,7 +33,8 @@ scene_objects = [
     {"object": door2, "position": (-7, 0.9, -5.3), "rotation": (0, 270, 0)},
     {"object": grocery_store, "position": (-35, 1.5, -5), "rotation": (0, 0, 0)},
     {"object": barn, "position": (-17.5, 2.5, -10), "rotation": (0, 0, 0)},
-    {"object": street_lights, "position": (-12.5, 2.4, -10), "rotation": (0, -90, 0)},
+    {"object": street_light1, "position": (-26, 2.4, -3.5), "rotation": (0, -90, 0)},
+    {"object": street_light2, "position": (-41.5, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": barnDoor, "position": (-17, 1.1, -8.1), "rotation": (0, 0, 0)},
 ]
 

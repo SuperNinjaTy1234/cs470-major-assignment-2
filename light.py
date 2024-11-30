@@ -2,11 +2,13 @@ from OpenGL.GL import *
 
 def enable_daytime_lighting():
     setup_daylight()
-    glDisable(GL_LIGHT1)
+    glDisable(GL_LIGHT1) #outside light 1
+    glDisable(GL_LIGHT2)  #outside light 2
 
 def enable_nighttime_lighting():
     setup_nightlight()
-    setup_house_light1()
+    setup_outside_lights()
+    #setup_house_light1()
 
 def setup_daylight():
     glEnable(GL_LIGHTING)
@@ -39,18 +41,42 @@ def setup_nightlight():
     # Change global ambient light to be darker
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.05, 0.05, 0.05, 1))
 
-def setup_house_light1():
+def setup_outside_lights():
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT1)
+    glEnable(GL_LIGHT2)
 
-    # Set up light color (ambient, diffuse, specular)
-    #glLightfv(GL_LIGHT1, GL_AMBIENT, (0.5, 0.5, 0.5, 1))
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, (0.5, 0.5, 0.5, 0.5))
-    #glLightfv(GL_LIGHT1, GL_SPECULAR, (1, 1, 1, 1))
+    #glLightfv(GL_LIGHT1, GL_POSITION, (-26, 5.4, -3, 0.0))
+
+    #glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0)
+    #glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0.0, 0.0, 0.0, 0.0))
+
+    #glLightfv(GL_LIGHT1, GL_AMBIENT, (0.1, 0.1, 0.1, 1))
+    #glLightfv(GL_LIGHT1, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    #glLightfv(GL_LIGHT1, GL_SPECULAR, (0.5, 0.5, 0.5, 1))
+
+    #glLightfv(GL_LIGHT1, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+
+    ambient = (0.1, 0.1, 0.1, 1)
+    diffuse = (0.5, 0.5, 0.5, 1)
+    specular = (0, 0, 0, 0)
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient)
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse)
+    glLightfv(GL_LIGHT1, GL_SPECULAR, specular)
 
     # Position the light (x, y, z, w)
-    # w is 0 for directional light (sun), 1 for point light
-    glLightfv(GL_LIGHT1, GL_POSITION, (0, 2, 10, 1))
+    # w is 1 for directional light (sun), 1 for point light
+    glLightfv(GL_LIGHT1, GL_POSITION, (-26, 5.4, -3, 1.0))
 
-    # Setup global ambient light
-    #glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.2, 0.2, 0.2, 1))
+    glLightfv(GL_LIGHT2, GL_AMBIENT, ambient)
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse)
+    glLightfv(GL_LIGHT2, GL_SPECULAR, specular)
+
+    glMaterialfv(GL_FRONT, GL_EMISSION, (0, 0, 0, 1))
+
+    # Position the light (x, y, z, w)
+    # w is 1 for directional light (sun), 1 for point light
+    glLightfv(GL_LIGHT2, GL_POSITION, (-41.5, 5.4, -3, 1.0))
+
+
