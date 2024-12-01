@@ -31,7 +31,7 @@ scene_objects = [
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
     {"object": imported_house2, "position": (-7, 2, -7), "rotation": (0, 270, 0)},
     {"object": door2, "position": (-7, 0.9, -5.3), "rotation": (0, 270, 0)},
-    {"object": grocery_store, "position": (-35, 1.5, -5), "rotation": (0, 0, 0)},
+    {"object": grocery_store, "position": (-35, 1.3, -5), "rotation": (0, 0, 0)},
     {"object": barn, "position": (-17.5, 2.5, -10), "rotation": (0, 0, 0)},
     {"object": street_light1, "position": (-26, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": street_light2, "position": (-41.5, 2.4, -3.5), "rotation": (0, -90, 0)},
