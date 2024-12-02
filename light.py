@@ -65,7 +65,7 @@ def setup_outside_lights():
     glLightfv(GL_LIGHT1, GL_POSITION, (0, 5.4, 0, 1.0))
 
     glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0)
-    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0.0, 0.0, 0.0, 0.0))
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0.0, -1.0, 0.0, 0.0))
 
     glLightfv(GL_LIGHT2, GL_AMBIENT, ambient)
     glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse)
