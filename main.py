@@ -198,6 +198,7 @@ def main():
         draw_skybox(skybox_textures)  # Draw the skybox
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        glPushMatrix()
         ground()
         glPushAttrib(GL_ALL_ATTRIB_BITS)
         draw_water_plane()
@@ -206,6 +207,7 @@ def main():
         house()
         house2()
         house3()
+        glPopMatrix()
 
         for obj in scene_objects:
             obj["object"].render(position=obj["position"], rotation=obj["rotation"], open_rotation=90)

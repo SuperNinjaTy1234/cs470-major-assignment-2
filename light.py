@@ -46,20 +46,12 @@ def setup_outside_lights():
     glEnable(GL_LIGHT1)
     glEnable(GL_LIGHT2)
 
-    #glLightfv(GL_LIGHT1, GL_POSITION, (-26, 5.4, -3, 0.0))
-
-
-
-    #glLightfv(GL_LIGHT1, GL_AMBIENT, (0.1, 0.1, 0.1, 1))
-    #glLightfv(GL_LIGHT1, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
-    #glLightfv(GL_LIGHT1, GL_SPECULAR, (0.5, 0.5, 0.5, 1))
-
-    #glLightfv(GL_LIGHT1, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
-
     ambient = (0.1, 0.1, 0.1, 1)
     diffuse = (1, 1, 1, 1)
     specular = (0, 0, 0, 0)
 
+    glPushMatrix()
+    glLoadIdentity()
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 60.0)
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0.0, -1.0, 0.0, 0.0))
 
@@ -69,8 +61,8 @@ def setup_outside_lights():
 
     # Position the light (x, y, z, w)
     # w is 0 for directional light (sun), 1 for point light
-    glLightfv(GL_LIGHT1, GL_POSITION, (-26, 5.4, -3, 1.0))
-    #glLightfv(GL_LIGHT1, GL_POSITION, (0, 5, 0, 1.0))
+    #glLightfv(GL_LIGHT1, GL_POSITION, (-26, 5.4, -3, 1.0))
+    glLightfv(GL_LIGHT1, GL_POSITION, (0, 5.4, 0, 1.0))
 
     glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0)
     glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0.0, 0.0, 0.0, 0.0))
@@ -84,4 +76,4 @@ def setup_outside_lights():
     # Position the light (x, y, z, w)
     # w is 1 for directional light (sun), 1 for point light
     glLightfv(GL_LIGHT2, GL_POSITION, (-41.5, 5.4, -3, 1.0))
-
+    glPopMatrix()
