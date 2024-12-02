@@ -153,13 +153,16 @@ def main():
                     move_y = 0
 
         forward = camera_target - camera_position
-        forward[1] = 0
         forward /= np.linalg.norm(forward)
+
+        movement_forward = forward.copy()
+        movement_forward[1] = 0
+        movement_forward /= np.linalg.norm(movement_forward)
 
         right = np.array([forward[2], 0, -forward[0]])
         right /= np.linalg.norm(right)
 
-        camera_position += forward * move_z * speed * delta_time
+        camera_position += movement_forward * move_z * speed * delta_time
         camera_position += right * move_x * speed * delta_time
         camera_position[1] += move_y * speed * delta_time
 
