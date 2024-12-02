@@ -37,6 +37,7 @@ catLeg2 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg2")
 catLeg3 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg3")
 catLeg4 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg4")
 trees = SceneObject("Models/trees.obj", scaled_size=5, name="trees")
+car = SceneObject("Models/Car.obj", scaled_size=5, name="car")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
@@ -57,6 +58,7 @@ scene_objects = [
     {"object": catLeg2, "position": (-9.3, 0.2, -4.1), "rotation": (0, 0, 0)},
     {"object": catLeg3, "position": (-8.7, 0.2, -3.9), "rotation": (0, 0, 0)},
     {"object": catLeg4, "position": (-8.7, 0.2, -4.1), "rotation": (0, 0, 0)},
+    {"object": car, "position": (-25,1.2, 0), "rotation": (0, 180, 0)},
 ]
 
 def toggle_visible_doors(camera_position, camera_target):
@@ -111,6 +113,8 @@ def main():
     camera_target = np.array([0.0, 0.0, 0.0])
     camera_up = np.array([0.0, 1.0, 0.0])
     move_x = move_y = move_z = rotate_horizontal = rotate_vertical = 0
+
+    move_car = 0
     speed = 9.0
     rotation_speed = 65.0
 
@@ -130,8 +134,8 @@ def main():
     while True:
         delta_time = clock.tick(60) / 1000.0
 
+        #Animations
         animation_time += delta_time
-
         if animation_time >= stop_time:
             is_animating = False
         if is_animating:
@@ -152,6 +156,15 @@ def main():
                 elif obj["object"].name == "cat":
                     obj["position"] = (obj["position"][0]+0.05, obj["position"][1], obj["position"][2])
 
+        if move_car == 1:
+            for obj in scene_objects:
+                if obj["object"].name == "car":
+                    obj["position"] = (obj["position"][0] + 0.5, obj["position"][1], obj["position"][2])
+        if move_car == -1:
+            for obj in scene_objects:
+                if obj["object"].name == "car":
+                    obj["position"] = (obj["position"][0] - 0.5, obj["position"][1], obj["position"][2])
+        #Event Loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -173,6 +186,10 @@ def main():
                     rotate_vertical = 1
                 elif event.key == pygame.K_n:
                     rotate_vertical = -1
+                elif event.key == pygame.K_RIGHT:
+                    move_car = 1
+                elif event.key == pygame.K_LEFT:
+                    move_car = -1
                 elif event.key == pygame.K_UP:
                     move_y = 1
                 elif event.key == pygame.K_DOWN:
@@ -196,6 +213,8 @@ def main():
                     rotate_vertical = 0
                 elif event.key in (pygame.K_UP, pygame.K_DOWN):
                     move_y = 0
+                elif event.key in (pygame.K_LEFT, pygame.K_RIGHT):
+                    move_car = 0
 
         forward = camera_target - camera_position
         forward /= np.linalg.norm(forward)
