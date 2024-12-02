@@ -22,11 +22,15 @@ imported_house1 = SceneObject("Models/House.obj", scaled_size=4,name="imported_h
 door1 = SceneObject('Models/door.obj', scaled_size=1.6, name="door1")
 imported_house2 = SceneObject("Models/House2.obj", scaled_size=4, name="imported_house2")
 door2 = SceneObject("Models/door2.obj", scaled_size=1.6, name="door2")
+imported_house3 = SceneObject("Models/House3.obj", scaled_size=4, name="imported_house3")
+door3 = SceneObject("Models/door3.obj", scaled_size=1.65, name="door3")
+imported_house4 = SceneObject("Models/House4.obj", scaled_size=4, name="imported_house4")
+door4 = SceneObject("Models/door4.obj", scaled_size=1.67, name="door4")
 grocery_store = SceneObject("Models/grocery_store.obj", scaled_size=5, name="grocery_store")
 barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
 street_light1 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 street_light2 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
-barnDoor = SceneObject("Models/barnDoor.obj", scaled_size=2.3, name="door3")
+barnDoor = SceneObject("Models/barnDoor.obj", scaled_size=2.3, name="door5")
 cat = SceneObject("Models/cat.obj", scaled_size=1.5, name="cat")
 catLeg1 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg1")
 catLeg2 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg2")
@@ -38,6 +42,10 @@ scene_objects = [
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
     {"object": imported_house2, "position": (-7, 2, -7), "rotation": (0, 270, 0)},
     {"object": door2, "position": (-7, 0.9, -5.3), "rotation": (0, 270, 0)},
+    {"object": imported_house3, "position": (-2,1.9, -7), "rotation": (0, 270, 0)},
+    {"object": door3, "position": (-1.95, 0.9, -5.1), "rotation": (0, 270, 0)},
+    {"object": imported_house4, "position": (2.7,2.05, -7), "rotation": (0, 270, 0)},
+    {"object": door4, "position": (2.7, 0.95, -5.1), "rotation": (0, 270, 0)},
     {"object": grocery_store, "position": (-35, 1.3, -5), "rotation": (0, 0, 0)},
     {"object": barn, "position": (-17.5, 2.5, -10), "rotation": (0, 0, 0)},
     {"object": street_light1, "position": (-26, 2.4, -3.5), "rotation": (0, -90, 0)},
@@ -103,8 +111,8 @@ def main():
     camera_target = np.array([0.0, 0.0, 0.0])
     camera_up = np.array([0.0, 1.0, 0.0])
     move_x = move_y = move_z = rotate_horizontal = rotate_vertical = 0
-    speed = 10.0
-    rotation_speed = 45.0
+    speed = 9.0
+    rotation_speed = 65.0
 
     setup_daylight()  # Start with daylight
 
@@ -241,9 +249,6 @@ def main():
         draw_water_plane()
         glPopAttrib()
         draw_road()
-        house()
-        house2()
-        house3()
         glPopMatrix()
 
         for obj in scene_objects:
