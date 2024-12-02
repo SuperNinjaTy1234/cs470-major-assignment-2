@@ -12,7 +12,7 @@ from body_of_water import *
 from houses import *
 from roads import *
 from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting
-from background import load_texture
+from background import load_skybox_textures, draw_skybox
 from scene_object import SceneObject
 
 # If you are importing through blender, use the SceneObject like below and it will take care of everything.
@@ -150,7 +150,7 @@ def main():
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    bg_texture = load_texture("Textures/mountain.jpg")  # Load the mountain texture
+
     camera = Camera()
     setup_daylight()  # Start with daylight
 
@@ -158,6 +158,7 @@ def main():
     glDepthFunc(GL_LESS)
     glEnable(GL_COLOR_MATERIAL)
 
+    skybox_textures = load_skybox_textures()
 
     is_daytime = True  # Lighting state
     clock = pygame.time.Clock()
@@ -218,7 +219,7 @@ def main():
             camera.target[0], camera.target[1], camera.target[2],
             camera.up[0], camera.up[1], camera.up[2]
         )
-
+        draw_skybox(skybox_textures)  # Draw the skybox
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         ground()
