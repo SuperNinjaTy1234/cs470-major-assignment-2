@@ -47,10 +47,10 @@ class SceneObject:
             glRotatef(open_rotation, 0, 1, 0)
             glTranslate(self.hinge_offset[0], self.hinge_offset[1], self.hinge_offset[2])
 
-        self._render_object()
+        self.render_object()
         glPopMatrix()
 
-    def _render_object(self):
+    def render_object(self):
         """
         Internal method to render the object using its scale and translation.
         """
@@ -70,3 +70,4 @@ class SceneObject:
             glEnd()
 
         glPopMatrix()
+

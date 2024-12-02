@@ -26,6 +26,7 @@ barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
 street_light1 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 street_light2 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 barnDoor = SceneObject("Models/barnDoor.obj", scaled_size=2.3, name="door3")
+cat = SceneObject("Models/cat.obj", scaled_size=5, name="cat")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
@@ -36,71 +37,10 @@ scene_objects = [
     {"object": street_light1, "position": (-26, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": street_light2, "position": (-41.5, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": barnDoor, "position": (-17, 1.1, -8.1), "rotation": (0, 0, 0)},
+    {"object": cat, "position": (-12.5, 2.4, -5.3), "rotation": (0, 0, 0)},
 ]
 
-# Had to implement major changes to camera in order for positions to work correctly
-# so doors could be opened and eventually a car can be moved
-class Camera:
-    def __init__(self):
-        self.position = np.array([0.0, 2.0, 10.0], dtype=np.float64)  # Initial position
-        self.target = np.array([0.0, 0.0, 0.0], dtype=np.float64)  # Look at origin
-        self.up = np.array([0.0, 1.0, 0.0], dtype=np.float64)  # Up direction
-
-        # Movement flags
-        self.move_x = 0
-        self.move_y = 0
-        self.move_z = 0
-        self.rotate_horizontal = 0
-        self.rotate_vertical = 0
-
-        self.speed = 8.0
-        self.rotation_speed = 60.0
-
-    def update_position(self, delta_time):
-        forward = self.target - self.position
-        forward[1] = 0
-        forward /= np.linalg.norm(forward)  # Normalize
-
-        dx = self.move_x * self.speed * delta_time
-        dy = self.move_y * self.speed * delta_time
-        dz = self.move_z * self.speed * delta_time
-
-        self.position += forward * dz
-        self.position[0] += dx
-        self.position[1] += dy
-
-        self.target += forward * dz
-        self.target[0] += dx
-        self.target[1] += dy
-
-
-    def rotate_camera(self, delta_time):
-        if self.rotate_horizontal or self.rotate_vertical:
-            if self.rotate_horizontal != 0:
-                angle = np.radians(self.rotate_horizontal * self.rotation_speed * delta_time)
-                rotation_matrix = np.array([
-                    [np.cos(angle), 0, np.sin(angle)],
-                    [0, 1, 0],
-                    [-np.sin(angle), 0, np.cos(angle)],
-                ])
-                direction = self.target - self.position
-                self.target = self.position + np.dot(rotation_matrix, direction)
-
-            if self.rotate_vertical != 0:
-                angle = np.radians(self.rotate_vertical * self.rotation_speed * delta_time)
-                rotation_matrix = np.array([
-                    [1, 0, 0],
-                    [0, np.cos(angle), -np.sin(angle)],
-                    [0, np.sin(angle), np.cos(angle)],
-                ])
-                direction = self.target - self.position
-                direction = np.dot(rotation_matrix, direction)
-
-                direction[1] = np.clip(direction[1], -10, 10)
-                self.target = self.position + direction
-
-
-def toggle_visible_doors(camera):
+def toggle_visible_doors(camera_position, camera_target):
     door_objects = [obj for obj in scene_objects if "door" in obj["object"].name.lower()]
     closest_door = None
     closest_distance = float("inf")
@@ -109,33 +49,30 @@ def toggle_visible_doors(camera):
         scene_obj = obj["object"]
         door_position = np.array(obj["position"])
 
-        is_visible = is_door_visible(camera, door_position)
-        print(f"{scene_obj.name} at {door_position} is {'visible' if is_visible else 'not visible'}")
+        is_visible = is_door_visible(camera_position, camera_target, door_position)
 
         if is_visible:
-            distance = np.linalg.norm(door_position - camera.position)
+            distance = np.linalg.norm(door_position - camera_position)
             if distance < closest_distance:
                 closest_door = scene_obj
                 closest_distance = distance
 
     if closest_door:
         closest_door.open = not closest_door.open
-        print(f"Toggled {closest_door.name}. New state: {'Open' if closest_door.open else 'Closed'}")
 
 
-def is_door_visible(camera, door_position):
-    to_door = door_position - camera.position
-    to_door /= np.linalg.norm(to_door)  # Normalize
+def is_door_visible(camera_position, camera_target, door_position):
+    forward = camera_target - camera_position
+    forward /= np.linalg.norm(forward)
 
-    forward = camera.target - camera.position
-    forward /= np.linalg.norm(forward)  # Normalize
-    if np.dot(forward, to_door) <= 0:
-        return False
+    to_door = door_position - camera_position
+    to_door /= np.linalg.norm(to_door)
+
     fov_cosine = np.cos(np.radians(45))
     if np.dot(forward, to_door) < fov_cosine:
         return False
 
-    distance = np.linalg.norm(door_position - camera.position)
+    distance = np.linalg.norm(door_position - camera_position)
     if distance > 15:
         return False
     return True
@@ -151,7 +88,13 @@ def main():
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
-    camera = Camera()
+    camera_position = np.array([0.0, 2.0, 10.0])
+    camera_target = np.array([0.0, 0.0, 0.0])
+    camera_up = np.array([0.0, 1.0, 0.0])
+    move_x = move_y = move_z = rotate_horizontal = rotate_vertical = 0
+    speed = 10.0
+    rotation_speed = 45.0
+
     setup_daylight()  # Start with daylight
 
     glEnable(GL_DEPTH_TEST)
@@ -170,28 +113,28 @@ def main():
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
-                    camera.move_x = -1
+                    move_x = 1
                 elif event.key == pygame.K_d:
-                    camera.move_x = 1
+                    move_x = -1
                 elif event.key == pygame.K_s:
-                    camera.move_z = -1
+                    move_z = -1
                 elif event.key == pygame.K_w:
-                    camera.move_z = 1
+                    move_z = 1
                 elif event.key == pygame.K_r:
-                    camera.rotate_horizontal = -1
+                    rotate_horizontal = -1
                 elif event.key == pygame.K_q:
-                    camera.rotate_horizontal = 1
+                    rotate_horizontal = 1
                 elif event.key == pygame.K_m:
-                    camera.rotate_vertical = 1
+                    rotate_vertical = 1
                 elif event.key == pygame.K_n:
-                    camera.rotate_vertical = -1
+                    rotate_vertical = -1
                 elif event.key == pygame.K_UP:
-                    camera.move_y = 1
+                    move_y = 1
                 elif event.key == pygame.K_DOWN:
-                    camera.move_y = -1
+                    move_y = -1
                 elif event.key == pygame.K_o:
-                    toggle_visible_doors(camera)
-                elif event.key is pygame.K_t:  # Toggle lighting
+                    toggle_visible_doors(camera_position, camera_target)
+                elif event.key == pygame.K_t:  # Toggle lighting
                     is_daytime = not is_daytime
                     if is_daytime:
                         enable_daytime_lighting()
@@ -199,25 +142,55 @@ def main():
                         enable_nighttime_lighting()
             if event.type == pygame.KEYUP:
                 if event.key in (pygame.K_a, pygame.K_d):
-                    camera.move_x = 0
+                    move_x = 0
                 elif event.key in (pygame.K_w, pygame.K_s):
-                    camera.move_z = 0
+                    move_z = 0
                 elif event.key in (pygame.K_q, pygame.K_r):
-                    camera.rotate_horizontal = 0
+                    rotate_horizontal = 0
                 elif event.key in (pygame.K_m, pygame.K_n):
-                    camera.rotate_vertical = 0
+                    rotate_vertical = 0
                 elif event.key in (pygame.K_UP, pygame.K_DOWN):
-                    camera.move_y = 0
+                    move_y = 0
 
-        camera.update_position(delta_time)
-        camera.rotate_camera(delta_time)
+        forward = camera_target - camera_position
+        forward[1] = 0
+        forward /= np.linalg.norm(forward)
+
+        right = np.array([forward[2], 0, -forward[0]])
+        right /= np.linalg.norm(right)
+
+        camera_position += forward * move_z * speed * delta_time
+        camera_position += right * move_x * speed * delta_time
+        camera_position[1] += move_y * speed * delta_time
+
+        camera_target = camera_position + forward
+
+        if rotate_horizontal != 0:
+            angle = np.radians(rotate_horizontal * rotation_speed * delta_time)
+            rotation_matrix = np.array([
+                [np.cos(angle), 0, np.sin(angle)],
+                [0, 1, 0],
+                [-np.sin(angle), 0, np.cos(angle)],
+            ])
+            forward = np.dot(rotation_matrix, forward)
+            camera_target = camera_position + forward
+
+        if rotate_vertical != 0:
+            angle = np.radians(rotate_vertical * rotation_speed * delta_time)
+            rotation_matrix = np.array([
+                [1, 0, 0],
+                [0, np.cos(angle), -np.sin(angle)],
+                [0, np.sin(angle), np.cos(angle)],
+            ])
+            forward = np.dot(rotation_matrix, forward)
+            camera_target = camera_position + forward
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         gluLookAt(
-            camera.position[0], camera.position[1], camera.position[2],
-            camera.target[0], camera.target[1], camera.target[2],
-            camera.up[0], camera.up[1], camera.up[2]
+            camera_position[0], camera_position[1], camera_position[2],
+            camera_target[0], camera_target[1], camera_target[2],
+            camera_up[0], camera_up[1], camera_up[2]
         )
         draw_skybox(skybox_textures)  # Draw the skybox
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -233,7 +206,6 @@ def main():
 
         for obj in scene_objects:
             obj["object"].render(position=obj["position"], rotation=obj["rotation"], open_rotation=90)
-
         pygame.display.flip()
 
 main()
