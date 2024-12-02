@@ -5,13 +5,6 @@ import pywavefront
 
 class SceneObject:
     def __init__(self, model_path, scaled_size, name=None):
-        """
-              Initialize a SceneObject with its model data and scaling.
-
-              Parameters:
-                  model_path (str): Path to the model file.
-                  scaled_size (float): Desired maximum size after scaling.
-        """
 
         self.model = pywavefront.Wavefront(model_path, collect_faces=True)
         self.name = name if name else model_path
@@ -28,14 +21,6 @@ class SceneObject:
 
         self.hinge_offset = (0.45, 0, 0)
     def render(self, position, rotation=(0, 0, 0), open_rotation=None):
-        """
-        Render the object at a given position with optional rotation.
-
-        Parameters:
-            position (tuple): World position (x, y, z).
-            rotation (tuple): Rotation angles (x, y, z) in degrees.
-            open_rotation (float): Additional rotation if the object is "open."
-        """
         glPushMatrix()
         glTranslate(*position)
         glRotatef(rotation[0], 1, 0, 0)
@@ -51,9 +36,6 @@ class SceneObject:
         glPopMatrix()
 
     def render_object(self):
-        """
-        Internal method to render the object using its scale and translation.
-        """
         glPushMatrix()
         glScalef(*self.scale)
         glTranslatef(*self.translation)

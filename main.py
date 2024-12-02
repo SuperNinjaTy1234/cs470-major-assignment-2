@@ -1,3 +1,4 @@
+import math
 
 #The main file of the program
 import pygame
@@ -26,7 +27,12 @@ barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
 street_light1 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 street_light2 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 barnDoor = SceneObject("Models/barnDoor.obj", scaled_size=2.3, name="door3")
-cat = SceneObject("Models/cat.obj", scaled_size=5, name="cat")
+cat = SceneObject("Models/cat.obj", scaled_size=1.5, name="cat")
+catLeg1 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg1")
+catLeg2 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg2")
+catLeg3 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg3")
+catLeg4 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg4")
+trees = SceneObject("Models/trees.obj", scaled_size=5, name="trees")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
@@ -37,7 +43,12 @@ scene_objects = [
     {"object": street_light1, "position": (-26, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": street_light2, "position": (-41.5, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": barnDoor, "position": (-17, 1.1, -8.1), "rotation": (0, 0, 0)},
-    {"object": cat, "position": (-12.5, 2.4, -5.3), "rotation": (0, 0, 0)},
+    {"object": cat, "position": (-9, 0.8, -4.0), "rotation": (0, 180, 0)},
+    {"object": trees, "position": (-12, 2.4, -8.3), "rotation": (0, 0, 0)},
+    {"object": catLeg1, "position": (-9.3, 0.2, -3.9), "rotation": (0, 0, 0)},
+    {"object": catLeg2, "position": (-9.3, 0.2, -4.1), "rotation": (0, 0, 0)},
+    {"object": catLeg3, "position": (-8.7, 0.2, -3.9), "rotation": (0, 0, 0)},
+    {"object": catLeg4, "position": (-8.7, 0.2, -4.1), "rotation": (0, 0, 0)},
 ]
 
 def toggle_visible_doors(camera_position, camera_target):
@@ -102,11 +113,37 @@ def main():
     glEnable(GL_COLOR_MATERIAL)
 
     skybox_textures = load_skybox_textures()
+    animation_time = 0.0
+    stop_time = 40.0
+    is_animating = True
 
     is_daytime = True  # Lighting state
     clock = pygame.time.Clock()
     while True:
         delta_time = clock.tick(60) / 1000.0
+
+        animation_time += delta_time
+
+        if animation_time >= stop_time:
+            is_animating = False
+        if is_animating:
+            angle = math.sin(animation_time * 4.0) * 30
+            for obj in scene_objects:
+                if obj["object"].name == "catLeg1":
+                    obj["rotation"] = (0, 0, angle)
+                    obj["position"] = (obj["position"][0] + 0.05, obj["position"][1], obj["position"][2])
+                elif obj["object"].name == "catLeg2":
+                    obj["rotation"] = (0, 0, -angle)
+                    obj["position"] = (obj["position"][0] + 0.05, obj["position"][1], obj["position"][2])
+                elif obj["object"].name == "catLeg3":
+                    obj["rotation"] = (0, 0, -angle)
+                    obj["position"] = (obj["position"][0] + 0.05, obj["position"][1], obj["position"][2])
+                elif obj["object"].name == "catLeg4":
+                    obj["rotation"] = (0, 0, angle)
+                    obj["position"] = (obj["position"][0] + 0.05, obj["position"][1], obj["position"][2])
+                elif obj["object"].name == "cat":
+                    obj["position"] = (obj["position"][0]+0.05, obj["position"][1], obj["position"][2])
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -188,7 +225,7 @@ def main():
             forward = np.dot(rotation_matrix, forward)
             camera_target = camera_position + forward
 
-        glMatrixMode(GL_MODELVIEW)
+
         glLoadIdentity()
         gluLookAt(
             camera_position[0], camera_position[1], camera_position[2],
