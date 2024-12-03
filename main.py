@@ -1,4 +1,3 @@
-import math
 import pygame
 import numpy as np
 from pygame.locals import *
@@ -8,10 +7,10 @@ from animations import toggle_visible_doors, animate_garage_door, animate_human_
 from background import init_opengl, draw_background, load_texture
 from ground_plane import *
 from body_of_water import *
+from helpers import vertical_rotation, horizontal_rotation
 from roads import *
 from light import enable_nighttime_lighting, enable_daytime_lighting, light_init
 from scene_object import scene_objects
-
 
 def main():
     pygame.init()
@@ -130,24 +129,10 @@ def main():
         camera_target = camera_position + forward
 
         if rotate_horizontal != 0:
-            angle = np.radians(rotate_horizontal * rotation_speed * delta_time)
-            rotation_matrix = np.array([
-                [np.cos(angle), 0, np.sin(angle)],
-                [0, 1, 0],
-                [-np.sin(angle), 0, np.cos(angle)],
-            ])
-            forward = np.dot(rotation_matrix, forward)
-            camera_target = camera_position + forward
+            camera_target = horizontal_rotation(rotate_horizontal, rotation_speed, delta_time, camera_position, forward)
 
         if rotate_vertical != 0:
-            angle = np.radians(rotate_vertical * rotation_speed * delta_time)
-            rotation_matrix = np.array([
-                [1, 0, 0],
-                [0, np.cos(angle), -np.sin(angle)],
-                [0, np.sin(angle), np.cos(angle)],
-            ])
-            forward = np.dot(rotation_matrix, forward)
-            camera_target = camera_position + forward
+            camera_target = vertical_rotation(rotate_vertical, rotation_speed, delta_time, camera_position, forward)
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)

@@ -50,5 +50,33 @@ def is_door_visible(camera_position, camera_target, door_position):
         return False
     return True
 
+def vertical_rotation(rotate_vertical, rotation_speed, delta_time, camera_position, forward):
+    angle = np.radians(rotate_vertical * rotation_speed * delta_time)
+    right = np.cross(forward, np.array([0.0, 1.0, 0.0]))
 
+    cos_angle = np.cos(angle)
+    sin_angle = np.sin(angle)
 
+    rotation_matrix = np.array([
+        [cos_angle + right[0] * right[0] * (1 - cos_angle),
+         right[0] * right[1] * (1 - cos_angle) - right[2] * sin_angle,
+         right[0] * right[2] * (1 - cos_angle) + right[1] * sin_angle],
+        [right[1] * right[0] * (1 - cos_angle) + right[2] * sin_angle,
+         cos_angle + right[1] * right[1] * (1 - cos_angle),
+         right[1] * right[2] * (1 - cos_angle) - right[0] * sin_angle],
+        [right[2] * right[0] * (1 - cos_angle) - right[1] * sin_angle,
+         right[2] * right[1] * (1 - cos_angle) + right[0] * sin_angle,
+         cos_angle + right[2] * right[2] * (1 - cos_angle)],
+    ])
+    forward = np.dot(rotation_matrix, forward)
+    return camera_position + forward
+
+def horizontal_rotation (rotate_horizontal, rotation_speed, delta_time, camera_position, forward):
+    angle = np.radians(rotate_horizontal * rotation_speed * delta_time)
+    rotation_matrix = np.array([
+        [np.cos(angle), 0, np.sin(angle)],
+        [0, 1, 0],
+        [-np.sin(angle), 0, np.cos(angle)],
+    ])
+    forward = np.dot(rotation_matrix, forward)
+    return camera_position + forward
