@@ -27,7 +27,8 @@ imported_house3 = SceneObject("Models/House3.obj", scaled_size=4, name="imported
 door3 = SceneObject("Models/door3.obj", scaled_size=1.65, name="door3")
 imported_house4 = SceneObject("Models/House4.obj", scaled_size=4, name="imported_house4")
 door4 = SceneObject("Models/door4.obj", scaled_size=1.67, name="door4")
-grocery_store = SceneObject("Models/grocery_store.obj", scaled_size=5, name="grocery_store")
+grocery_store = SceneObject("Models/Grocery_Store.obj", scaled_size=8, name="grocery_store")
+garage_door = SceneObject("Models/garage.obj", scaled_size=3, name="garage")
 barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
 street_light1 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
 street_light2 = SceneObject("Models/street_lights.obj", scaled_size=5, name="street_lights")
@@ -50,7 +51,8 @@ scene_objects = [
     {"object": door3, "position": (-1.95, 0.9, -5.1), "rotation": (0, 270, 0)},
     {"object": imported_house4, "position": (2.7,2.05, -7), "rotation": (0, 270, 0)},
     {"object": door4, "position": (2.7, 0.95, -5.1), "rotation": (0, 270, 0)},
-    {"object": grocery_store, "position": (-35, 1.3, -5), "rotation": (0, 0, 0)},
+    {"object": grocery_store, "position": (-35, 2.6, -7), "rotation": (0, 0, 0)},
+    {"object": garage_door, "position": (-35.1, 1, -4.2), "rotation": (0, 0, 0)},
     {"object": barn, "position": (-17.5, 2.5, -10), "rotation": (0, 0, 0)},
     {"object": street_light1, "position": (-26, 2.4, -3.5), "rotation": (0, -90, 0)},
     {"object": street_light2, "position": (-41.5, 2.4, -3.5), "rotation": (0, -90, 0)},
@@ -102,6 +104,20 @@ def is_door_visible(camera_position, camera_target, door_position):
     if distance > 15:
         return False
     return True
+
+def animate_garage_door( camera_position, camera_target, open_state):
+    for obj in scene_objects:
+        if obj["object"].name == "garage":
+            position = np.array(obj["position"])
+            visible = is_door_visible(camera_position, camera_target, position)
+            if visible:
+                if open_state:
+                    obj["position"] = (obj["position"][0], obj["position"][1] + 1.26, obj["position"][2])
+                    obj["rotation"] = (90, obj["rotation"][1], obj["rotation"][2])
+                else:
+                    obj["position"] = (-35.1, 1, -4.2)
+                    obj["rotation"] = (0, 0, 0)
+
 def rotate_human_towards_camera(camera_position, human_position):
     direction_to_camera = camera_position - human_position
     direction_to_camera[1] = 0
@@ -164,7 +180,7 @@ def main():
     glEnable(GL_DEPTH_TEST)
     glDepthFunc(GL_LESS)
     glEnable(GL_COLOR_MATERIAL)
-
+    garage_open_state = False
     animation_time = 0.0
     stop_time = 40.0
     is_animating = True
@@ -276,6 +292,8 @@ def main():
                 elif event.key == pygame.K_DOWN:
                     move_y = -1
                 elif event.key == pygame.K_o:
+                    garage_open_state = not garage_open_state
+                    animate_garage_door(camera_position, camera_target, garage_open_state)
                     toggle_visible_doors(camera_position, camera_target)
                 elif event.key == pygame.K_t:  # Toggle lighting
                     is_daytime = not is_daytime
@@ -357,6 +375,7 @@ def main():
 
         for obj in scene_objects:
             obj["object"].render(position=obj["position"], rotation=obj["rotation"], open_rotation=90)
+
         pygame.display.flip()
 
 main()
