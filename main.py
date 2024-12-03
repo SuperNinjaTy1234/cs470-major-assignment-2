@@ -13,8 +13,7 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
-from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting, update_light_position, \
-    set_light_position
+from light import enable_nighttime_lighting, enable_daytime_lighting, light_init
 from scene_object import SceneObject
 
 # If you are importing through blender, use the SceneObject like below and it will take care of everything.
@@ -45,7 +44,7 @@ arm = SceneObject("Models/Arm.obj", scaled_size=0.6, name="arm")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
-    {"object": imported_house2, "position": (-7, 2, -7), "rotation": (0, 270, 0)},
+    {"object": imported_house2, "position": (-7, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door2, "position": (-7, 0.9, -5.3), "rotation": (0, 270, 0)},
     {"object": imported_house3, "position": (-2,1.9, -7), "rotation": (0, 270, 0)},
     {"object": door3, "position": (-1.95, 0.9, -5.1), "rotation": (0, 270, 0)},
@@ -151,7 +150,6 @@ def rotate_point_around_center(point, center, angle):
     z_new = x_point  * math.sin(angle_rad) + z * math.cos(angle_rad)
     return x_new + center[0], z_new + center[1]
 
-
 def main():
     pygame.init()
     display = (800, 600)
@@ -174,8 +172,8 @@ def main():
     move_car = 0
     speed = 9.0
     rotation_speed = 65.0
-
-    setup_daylight()  # Start with daylight
+    glEnable(GL_LIGHTING)
+    enable_daytime_lighting()  # Start with daylight
 
     glEnable(GL_DEPTH_TEST)
     glDepthFunc(GL_LESS)
@@ -351,14 +349,16 @@ def main():
             forward = np.dot(rotation_matrix, forward)
             camera_target = camera_position + forward
 
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         gluLookAt(
             camera_position[0], camera_position[1], camera_position[2],
             camera_target[0], camera_target[1], camera_target[2],
             camera_up[0], camera_up[1], camera_up[2]
         )
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        light_init(is_daytime)
         glPushMatrix()
         draw_background(background_texture)
         ground()
@@ -366,16 +366,9 @@ def main():
         draw_water_plane()
         glPopAttrib()
         draw_road()
-        glPopMatrix()
-
-        glPushMatrix()
-        set_light_position()
-        #update_light_position(camera_position[0], camera_position[1], camera_position[2])
-        glPopMatrix()
-
         for obj in scene_objects:
             obj["object"].render(position=obj["position"], rotation=obj["rotation"], open_rotation=90)
-
+        glPopMatrix()
         pygame.display.flip()
 
 main()
