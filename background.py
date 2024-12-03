@@ -26,6 +26,35 @@ def draw_background(texture):
     glTexCoord2f(1, 1); glVertex3f(100, 100, -40)
     glTexCoord2f(0, 1); glVertex3f(-100, 100, -40)
     glEnd()
+
+    glBegin(GL_QUADS)
+    glTexCoord2f(0, 0); glVertex3f(100, -100, -40)
+    glTexCoord2f(1, 0); glVertex3f(100, -100, 40)
+    glTexCoord2f(1, 1); glVertex3f(100, 100, 40)
+    glTexCoord2f(0, 1); glVertex3f(100, 100, -40)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glTexCoord2f(0, 0); glVertex3f(-100, -100, 40)
+    glTexCoord2f(1, 0); glVertex3f(-100, -100, -40)
+    glTexCoord2f(1, 1); glVertex3f(-100, 100, -40)
+    glTexCoord2f(0, 1); glVertex3f(-100, 100, 40)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glTexCoord2f(0, 0); glVertex3f(-100, 100, -40)
+    glTexCoord2f(1, 0); glVertex3f(100, 100, -40)
+    glTexCoord2f(1, 1); glVertex3f(100, 100, 40)
+    glTexCoord2f(0, 1); glVertex3f(-100, 100, 40)
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glTexCoord2f(0, 0); glVertex3f(-100, -100, 40)
+    glTexCoord2f(1, 0); glVertex3f(100, -100, 40)
+    glTexCoord2f(1, 1); glVertex3f(100, 100, 40)
+    glTexCoord2f(0, 1); glVertex3f(-100, 100, 40)
+    glEnd()
+
     glDisable(GL_TEXTURE_2D)
 
 def init_opengl(display_size):

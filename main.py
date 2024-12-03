@@ -23,7 +23,7 @@ def main():
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluPerspective(45, (display[0] / display[1]), 0.1, 100.0)
+    gluPerspective(45, (display[0] / display[1]), 0.1, 200.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
