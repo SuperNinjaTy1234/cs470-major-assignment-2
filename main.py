@@ -38,6 +38,8 @@ catLeg3 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg3")
 catLeg4 = SceneObject("Models/catLeg1.obj", scaled_size=0.4, name="catLeg4")
 trees = SceneObject("Models/trees.obj", scaled_size=5, name="trees")
 car = SceneObject("Models/Car.obj", scaled_size=5, name="car")
+human = SceneObject("Models/Human.obj", scaled_size=2, name="human")
+arm = SceneObject("Models/Arm.obj", scaled_size=0.6, name="arm")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
@@ -59,6 +61,8 @@ scene_objects = [
     {"object": catLeg3, "position": (-8.7, 0.2, -3.9), "rotation": (0, 0, 0)},
     {"object": catLeg4, "position": (-8.7, 0.2, -4.1), "rotation": (0, 0, 0)},
     {"object": car, "position": (-25,1.2, 0), "rotation": (0, 180, 0)},
+    {"object": human, "position": (-23,1, -8), "rotation": (0, 90, 0)},
+    {"object": arm, "position": (-23,1.22, -8.4), "rotation": (0, 90, 0)},
 ]
 
 def toggle_visible_doors(camera_position, camera_target):
@@ -97,6 +101,39 @@ def is_door_visible(camera_position, camera_target, door_position):
     if distance > 15:
         return False
     return True
+def rotate_human_towards_camera(camera_position, human_position):
+    direction_to_camera = camera_position - human_position
+    direction_to_camera[1] = 0
+    direction_to_camera /= np.linalg.norm(direction_to_camera)
+
+    angle = np.degrees(np.arctan2(direction_to_camera[0], direction_to_camera[2]))
+    return angle
+
+def is_visible(camera_position, camera_target, human_position):
+    forward = camera_target - camera_position
+    forward /= np.linalg.norm(forward)
+
+    to_human = human_position - camera_position
+    to_human /= np.linalg.norm(to_human)
+
+    fov_cosine = np.cos(np.radians(45))
+
+    if np.dot(forward, to_human) < fov_cosine:
+        return False
+
+    distance = np.linalg.norm(human_position - camera_position)
+    if distance > 10:
+        return False
+
+    return True
+
+def rotate_point_around_center(point, center, angle):
+    angle_rad = math.radians(angle)
+    x_point, z = point[0] - center[0], point[1] - center[1]
+    x_new = x_point * math.cos(angle_rad) - z * math.sin(angle_rad)
+    z_new = x_point  * math.sin(angle_rad) + z * math.cos(angle_rad)
+    return x_new + center[0], z_new + center[1]
+
 
 def main():
     pygame.init()
@@ -166,6 +203,47 @@ def main():
             for obj in scene_objects:
                 if obj["object"].name == "car":
                     obj["position"] = (obj["position"][0] - 0.5, obj["position"][1], obj["position"][2])
+
+        for obj in scene_objects:
+            if obj["object"].name == "human":
+                human_position = np.array(obj["position"])
+                if is_visible(camera_position, camera_target, human_position):
+                    target_rotation = rotate_human_towards_camera(camera_position, human_position)
+                    current_rotation = obj["rotation"][1]  # Get current Y rotation
+                    if abs(target_rotation - current_rotation) > 0:
+                        if target_rotation > current_rotation:
+                            current_rotation += rotation_speed * delta_time
+                        elif target_rotation < current_rotation:
+                            current_rotation -= rotation_speed * delta_time
+
+                        if abs(current_rotation - target_rotation) < rotation_speed * delta_time:
+                            current_rotation = target_rotation
+
+                    obj["rotation"] = (0, current_rotation, 0)
+                    for arm_obj in scene_objects:
+                        if arm_obj["object"].name == "arm":
+                            arm_offset = np.array([0.47, 0.6, 0.14])
+                            arm_local_position = human_position + arm_offset
+
+                            # Rotate the arm's local position around the human
+                            rotated_xz = rotate_point_around_center(
+                                (arm_local_position[0], arm_local_position[2]),
+                                (human_position[0], human_position[2]),
+                                -current_rotation
+                            )
+
+                            # Update the arm's world position
+                            arm_obj["position"] = (rotated_xz[0], arm_local_position[1], rotated_xz[1])
+
+                            wave_angle = math.sin(animation_time * 4.0) * 10
+                            arm_obj["rotation"] = (0,current_rotation,160 + wave_angle)
+                else:
+                    obj["rotation"] = (0, 90, 0)
+                    for arm_obj in scene_objects:
+                        if arm_obj["object"].name == "arm":
+                            arm_obj["position"] = (-23,1.22, -8.4)
+                            arm_obj["rotation"] = (0, 90, 0)
+
         #Event Loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
