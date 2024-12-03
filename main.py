@@ -333,7 +333,6 @@ def main():
             forward = np.dot(rotation_matrix, forward)
             camera_target = camera_position + forward
 
-
         glLoadIdentity()
         gluLookAt(
             camera_position[0], camera_position[1], camera_position[2],
@@ -341,7 +340,7 @@ def main():
             camera_up[0], camera_up[1], camera_up[2]
         )
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        
+
         glPushMatrix()
         draw_background(background_texture)
         ground()
@@ -352,8 +351,8 @@ def main():
         glPopMatrix()
 
         glPushMatrix()
-        #set_light_position()
-        update_light_position(camera_position[0], camera_position[1], camera_position[2])
+        set_light_position()
+        #update_light_position(camera_position[0], camera_position[1], camera_position[2])
         glPopMatrix()
 
         for obj in scene_objects:
