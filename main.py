@@ -7,13 +7,13 @@ from pygame.locals import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
+from background import init_opengl, draw_background, load_texture
 #imports of specific models
 from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
 from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting
-from background import load_skybox_textures, draw_skybox
 from scene_object import SceneObject
 
 # If you are importing through blender, use the SceneObject like below and it will take care of everything.
@@ -101,7 +101,10 @@ def is_door_visible(camera_position, camera_target, door_position):
 def main():
     pygame.init()
     display = (800, 600)
+    init_opengl(display)
+
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    background_texture = load_texture("Background_imgs/front.jpg")
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
@@ -124,7 +127,6 @@ def main():
     glDepthFunc(GL_LESS)
     glEnable(GL_COLOR_MATERIAL)
 
-    skybox_textures = load_skybox_textures()
     animation_time = 0.0
     stop_time = 40.0
     is_animating = True
@@ -259,8 +261,9 @@ def main():
             camera_target[0], camera_target[1], camera_target[2],
             camera_up[0], camera_up[1], camera_up[2]
         )
-        draw_skybox(skybox_textures)  # Draw the skybox
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+        draw_background(background_texture)
 
         glPushMatrix()
         ground()
