@@ -108,7 +108,7 @@ def main():
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
+    gluPerspective(45, (display[0] / display[1]), 0.1, 100.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
@@ -263,9 +263,8 @@ def main():
         )
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        draw_background(background_texture)
-
         glPushMatrix()
+        draw_background(background_texture)
         ground()
         glPushAttrib(GL_ALL_ATTRIB_BITS)
         draw_water_plane()
