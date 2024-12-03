@@ -40,9 +40,10 @@ def draw_road_plane():
     #draw_yellow_lines()
 
     glPushMatrix()
-    glTranslate(-30, 0, 0)
+    glTranslate(-30, 0.01, 0)
     side_walk()
     road_plane()
+    glTranslate(0, -0.01,0)
     #draw_yellow_lines()
     glPopMatrix()
 
@@ -84,12 +85,12 @@ def draw_road_intersection():
     glRotatef(90, 0, 1, 0)  # Rotate to set other side_walk plane
     side_walk()
     glRotate(-90, 0, 1, 0)  # Rotate back to continue as normal
-    road_plane()
+    road_plane() #problem
     #draw_yellow_lines()
     glRotatef(90, 0, 1, 0)
-    glTranslate(0, 0.01, 0)
+    glTranslate(0, 0.02, 0)
     road_plane()
-    glTranslate(0, -0.01, 0)
+    glTranslate(0, -0.02, 0)
     #draw_yellow_lines()
 
     #Draws the road going back from the left intersection
@@ -112,9 +113,9 @@ def draw_road_intersection():
     road_plane()
     #draw_yellow_lines()
     glRotatef(90, 0, 1, 0)
-    glTranslate(0, 0.01, 0)
+    glTranslate(0, 0.02, 0)
     road_plane()
-    glTranslate(0, -0.01, 0)
+    glTranslate(0, -0.02, 0)
     #draw_yellow_lines()
 
     #Draws the road going back from the right intersection
