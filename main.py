@@ -1,31 +1,27 @@
 import math
-
-#The main file of the program
 import pygame
 import numpy as np
 from pygame.locals import *
 from OpenGL.GLU import *
-from OpenGL.GL import *
-
 from background import init_opengl, draw_background, load_texture
-#imports of specific models
 from ground_plane import *
 from body_of_water import *
-from houses import *
 from roads import *
 from light import enable_nighttime_lighting, enable_daytime_lighting, light_init
 from scene_object import SceneObject
 
-# If you are importing through blender, use the SceneObject like below and it will take care of everything.
-# It already will render because there is a for loop that loops through all scene objects
 imported_house1 = SceneObject("Models/House.obj", scaled_size=4,name="imported_house1")
 door1 = SceneObject('Models/door.obj', scaled_size=1.6, name="door1")
+door1b = SceneObject('Models/door.obj', scaled_size=1.6, name="door1b")
 imported_house2 = SceneObject("Models/House2.obj", scaled_size=4, name="imported_house2")
 door2 = SceneObject("Models/door2.obj", scaled_size=1.6, name="door2")
+door2b = SceneObject("Models/door2.obj", scaled_size=1.6, name="door2b")
 imported_house3 = SceneObject("Models/House3.obj", scaled_size=4, name="imported_house3")
 door3 = SceneObject("Models/door3.obj", scaled_size=1.65, name="door3")
+door3b = SceneObject("Models/door3.obj", scaled_size=1.65, name="door3b")
 imported_house4 = SceneObject("Models/House4.obj", scaled_size=4, name="imported_house4")
 door4 = SceneObject("Models/door4.obj", scaled_size=1.67, name="door4")
+door4b = SceneObject("Models/door4.obj", scaled_size=1.67, name="door4b")
 grocery_store = SceneObject("Models/Grocery_Store.obj", scaled_size=8, name="grocery_store")
 garage_door = SceneObject("Models/garage.obj", scaled_size=3, name="garage")
 barn = SceneObject("Models/barn.obj", scaled_size=5, name="barn")
@@ -44,12 +40,16 @@ arm = SceneObject("Models/Arm.obj", scaled_size=0.6, name="arm")
 scene_objects = [
     {"object": imported_house1, "position": (8, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door1, "position": (8, 0.9, -5.3), "rotation": (0, 270, 0)},
+    {"object": door1b, "position": (8, 0.9, -8.8), "rotation": (0, 90, 0)},
     {"object": imported_house2, "position": (-7, 2.05, -7), "rotation": (0, 270, 0)},
     {"object": door2, "position": (-7, 0.9, -5.3), "rotation": (0, 270, 0)},
+    {"object": door2b, "position": (-6.9, 0.9, -8.8), "rotation": (0, 90, 0)},
     {"object": imported_house3, "position": (-2,1.9, -7), "rotation": (0, 270, 0)},
-    {"object": door3, "position": (-1.95, 0.9, -5.1), "rotation": (0, 270, 0)},
+    {"object": door3, "position": (-1.92, 0.9, -5.18), "rotation": (0, 270, 0)},
+    {"object": door3b, "position": (-1.92, 0.9, -8.9), "rotation": (0, 90, 0)},
     {"object": imported_house4, "position": (2.7,2.05, -7), "rotation": (0, 270, 0)},
-    {"object": door4, "position": (2.7, 0.95, -5.1), "rotation": (0, 270, 0)},
+    {"object": door4, "position": (2.74, 0.95, -5.18), "rotation": (0, 270, 0)},
+    {"object": door4b, "position": (2.74, 0.95, -8.9), "rotation": (0, 90, 0)},
     {"object": grocery_store, "position": (-35, 2.6, -7), "rotation": (0, 0, 0)},
     {"object": garage_door, "position": (-35.1, 1, -4.2), "rotation": (0, 0, 0)},
     {"object": barn, "position": (-17.5, 2.5, -10), "rotation": (0, 0, 0)},
