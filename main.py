@@ -13,7 +13,7 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
-from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting
+from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting, update_light_position
 from scene_object import SceneObject
 
 # If you are importing through blender, use the SceneObject like below and it will take care of everything.
@@ -271,6 +271,8 @@ def main():
         glPopAttrib()
         draw_road()
         glPopMatrix()
+
+        update_light_position(camera_position[0], camera_position[1], camera_position[2])
 
         for obj in scene_objects:
             obj["object"].render(position=obj["position"], rotation=obj["rotation"], open_rotation=90)

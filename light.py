@@ -86,8 +86,8 @@ def set_light_position():
     glPopMatrix()
 
 def update_light_position(x, y, z):
-    light1_position = (-26, 5.4, -3)
-    light2_position = (-41.5, 5.4, -3)
+    light1_position = (-26 - x, 5.4 - y, -3 - z)
+    light2_position = (-41.5 - x, 5.4 - y, -3 - z)
 
     glPushMatrix()
     glLoadIdentity()
