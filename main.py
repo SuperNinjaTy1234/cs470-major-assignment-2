@@ -272,7 +272,9 @@ def main():
         draw_road()
         glPopMatrix()
 
+        glPushMatrix()
         update_light_position(camera_position[0], camera_position[1], camera_position[2])
+        glPopMatrix()
 
         for obj in scene_objects:
             obj["object"].render(position=obj["position"], rotation=obj["rotation"], open_rotation=90)

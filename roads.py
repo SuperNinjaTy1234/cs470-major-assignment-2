@@ -87,7 +87,9 @@ def draw_road_intersection():
     road_plane()
     #draw_yellow_lines()
     glRotatef(90, 0, 1, 0)
+    glTranslate(0, 0.01, 0)
     road_plane()
+    glTranslate(0, -0.01, 0)
     #draw_yellow_lines()
 
     #Draws the road going back from the left intersection
@@ -110,7 +112,9 @@ def draw_road_intersection():
     road_plane()
     #draw_yellow_lines()
     glRotatef(90, 0, 1, 0)
+    glTranslate(0, 0.01, 0)
     road_plane()
+    glTranslate(0, -0.01, 0)
     #draw_yellow_lines()
 
     #Draws the road going back from the right intersection
