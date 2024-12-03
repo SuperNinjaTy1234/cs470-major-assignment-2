@@ -13,7 +13,8 @@ from ground_plane import *
 from body_of_water import *
 from houses import *
 from roads import *
-from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting, update_light_position
+from light import setup_daylight, enable_nighttime_lighting, enable_daytime_lighting, update_light_position, \
+    set_light_position
 from scene_object import SceneObject
 
 # If you are importing through blender, use the SceneObject like below and it will take care of everything.
@@ -340,7 +341,7 @@ def main():
             camera_up[0], camera_up[1], camera_up[2]
         )
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
+        
         glPushMatrix()
         draw_background(background_texture)
         ground()
@@ -351,6 +352,7 @@ def main():
         glPopMatrix()
 
         glPushMatrix()
+        #set_light_position()
         update_light_position(camera_position[0], camera_position[1], camera_position[2])
         glPopMatrix()
 
