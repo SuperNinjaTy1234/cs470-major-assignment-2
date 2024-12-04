@@ -1,186 +1,178 @@
 from OpenGL.GL import *
 
 road_plane_edges = (
-    (-15, 0.03, 2),
-    (15, 0.03, 2),
-    (15, 0.03, -2),
-    (-15, 0.03, -2)
+    (-5, 0.03, 2),
+    (5, 0.03, 2),
+    (5, 0.03, -2),
+    (-5, 0.03, -2)
 )
 
 sidewalk_edges = (
-    (-15, 0.02, 3),
-    (15, 0.02, 3),
-    (15, 0.02, -3),
-    (-15, 0.02, -3)
+    (-5, 0.02, 3),
+    (5, 0.02, 3),
+    (5, 0.02, -3),
+    (-5, 0.02, -3)
 )
 
-yellow_line_edges = (
-    (-1, 0.04, 0.5),
-    (1, 0.04, 0.5),
-    (1, 0.04, -0.5),
-    (-1, 0.04, -0.5)
-)
 
 def draw_road():
     draw_road_plane()
     draw_road_intersection() #this function draws more than the road intersection as of now
 
-def draw_side_walk():
-    side_walk()
-
-    glPushMatrix()
-    glTranslatef(-30, 0, 0)
-    side_walk()
-    glPopMatrix()
-
 def draw_road_plane():
-    #Draws road directly in front of the camera
-    side_walk()
-    road_plane()
-    #draw_yellow_lines()
-
-    glPushMatrix()
-    glTranslate(-30, 0.01, 0)
-    side_walk()
-    road_plane()
-    glTranslate(0, -0.01,0)
-    #draw_yellow_lines()
-    glPopMatrix()
-
-    #Draws road behind the road above
-    glPushMatrix()
-    glTranslate(0, 0, -60)
-    side_walk()
-    road_plane()
-    #draw_yellow_lines()
-
-    glPushMatrix()
-    glTranslate(-30, 0, 0)
-    side_walk()
-    road_plane()
-    #draw_yellow_lines()
-    glPopMatrix()
-
-    glPopMatrix()
-
-#Reusable function for drawing the yellow lines of a road
-def draw_yellow_lines():
-    for x in range(4):
+    segment_length = 10
+    left_segments = 11
+    right_segments = 11
+    for i in range(left_segments):
+        offset = i * segment_length
         glPushMatrix()
-        glTranslate(4 * x, 0, 0)
-        yellow_line()
+        glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+        side_walk()
+        road_plane()
         glPopMatrix()
 
-    for x in range(4):
+    for i in range(right_segments):
+        offset = i * segment_length
         glPushMatrix()
-        glTranslate(-4 * x, 0, 0)
-        yellow_line()
+        glTranslatef(offset, 0, 0)  # Adjust position for each segment
+        side_walk()
+        road_plane()
         glPopMatrix()
+
 
 def draw_road_intersection():
-    #Draws the left intersection
+    segment_length = 10
+    left_segments = 5
+    right_segments = 11
+
+    #left intersection
     glPushMatrix()
-    glTranslate(-45, 0, 0)
-    side_walk()
-    glRotatef(90, 0, 1, 0)  # Rotate to set other side_walk plane
-    side_walk()
-    glRotate(-90, 0, 1, 0)  # Rotate back to continue as normal
-    road_plane() #problem
-    #draw_yellow_lines()
+    glTranslatef(-50, -0.01, 0)
     glRotatef(90, 0, 1, 0)
-    glTranslate(0, 0.02, 0)
-    road_plane()
-    glTranslate(0, -0.02, 0)
-    #draw_yellow_lines()
+    intersection_sidewalk()
 
-    #Draws the road going back from the left intersection
     glPushMatrix()
-    glTranslate(30, 0, 0)
-    side_walk()
-    road_plane()
-    #draw_yellow_lines()
+    glTranslatef(0, 0.021, 0)
+    intersection_roads()
     glPopMatrix()
 
+    for i in range(left_segments):
+       offset = i * segment_length + 10
+       glPushMatrix()
+       glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+       intersection_sidewalk()
+       intersection_roads()
+       glPopMatrix()
+
+    for i in range(right_segments):
+       offset = i * segment_length + 10
+       glPushMatrix()
+       glTranslatef(offset, 0, 0)  # Adjust position for each segment
+       intersection_sidewalk()
+       intersection_roads()
+       glPopMatrix()
     glPopMatrix()
 
-    #Draws the right intersection
+    #right intersection
     glPushMatrix()
-    glTranslate(30, 0, 0)
-    side_walk()
-    glRotatef(90, 0, 1, 0)  # Rotate to set other side_walk plane
-    side_walk()
-    glRotate(-90, 0, 1, 0)  # Rotate back to continue as normal
-    road_plane()
-    #draw_yellow_lines()
+    glTranslatef(50, -0.01, 0)
     glRotatef(90, 0, 1, 0)
-    glTranslate(0, 0.02, 0)
-    road_plane()
-    glTranslate(0, -0.02, 0)
-    #draw_yellow_lines()
+    intersection_sidewalk()
 
-    #Draws the road going back from the right intersection
     glPushMatrix()
-    glTranslate(30, 0, 0)
-    side_walk()
-    road_plane()
-    #draw_yellow_lines()
+    glTranslatef(0, 0.021, 0)
+    intersection_roads()
+    glPopMatrix()
+    for i in range(left_segments):
+       offset = i * segment_length + 10
+       glPushMatrix()
+       glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+       intersection_sidewalk()
+       intersection_roads()
+       glPopMatrix()
+
+    for i in range(right_segments):
+       offset = i * segment_length + 10
+       glPushMatrix()
+       glTranslatef(offset, 0, 0)  # Adjust position for each segment
+       intersection_sidewalk()
+       intersection_roads()
+       glPopMatrix()
     glPopMatrix()
 
-    glPopMatrix()
-
-    # Draws the right-back intersection
+    #back left intersection
     glPushMatrix()
-    glTranslate(30, 0, -60)
+    glTranslatef(-50, -0.01, -25)
     side_walk()
-    glRotatef(90, 0, 1, 0)  # Rotate to set other side_walk plane
-    side_walk()
-    glRotate(-90, 0, 1, 0)  # Rotate back to continue as normal
-    road_plane()
-    #draw_yellow_lines()
-    glRotatef(90, 0, 1, 0)
-    road_plane()
-    #draw_yellow_lines()
-    glPopMatrix()
 
-    # Draws the left-back intersection
     glPushMatrix()
-    glTranslate(-45, 0, -60)
-    side_walk()
-    glRotatef(90, 0, 1, 0)  # Rotate to set other side_walk plane
-    side_walk()
-    glRotate(-90, 0, 1, 0)  # Rotate back to continue as normal
+    glTranslatef(0, 0.021, 0)
     road_plane()
-    #draw_yellow_lines()
-    glRotatef(90, 0, 1, 0)
-    road_plane()
-    #draw_yellow_lines()
     glPopMatrix()
+    for i in range(left_segments):
+       offset = i * segment_length + 10
+       glPushMatrix()
+       glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+       side_walk()
+       road_plane()
+       glPopMatrix()
 
+    for i in range(right_segments+4):
+       offset = i * segment_length + 10
+       glPushMatrix()
+       glTranslatef(offset, 0, 0)  # Adjust position for each segment
+       side_walk()
+       road_plane()
+       glPopMatrix()
+
+    glPopMatrix()
 def road_plane():
+    glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT)
+    glDisable(GL_COLOR_MATERIAL)
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, [0.1, 0.1, 0.1, 0.0])
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, [0.2, 0.2, 0.2, 1.0])
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, [1, 1, 1, 1.0])
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 25.0)
+
     glBegin(GL_QUADS)
-    glColor3f(0.2, 0.2, 0.2)
 
     for edge in road_plane_edges:
         glVertex3fv(edge)
 
     glEnd()
     glFlush()
+    glEnable(GL_COLOR_MATERIAL)
+    glPopAttrib()
 
 def side_walk():
-    glBegin(GL_QUADS)
-    glColor3f(0.7, 0.7, 0.7)
+    glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT)
+    glDisable(GL_COLOR_MATERIAL)
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, [0.1, 0.1, 0.1, 0.0])
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, [0.7, 0.7, 0.7, 1.0])
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, [1, 1, 1, 1.0])
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 25.0)
 
+    glBegin(GL_QUADS)
     for edge in sidewalk_edges:
         glVertex3fv(edge)
 
     glEnd()
     glFlush()
+    glPopAttrib()
 
-def yellow_line():
+def intersection_roads():
     glBegin(GL_QUADS)
-    glColor3f(1, 1, 0)
+    glColor3f(0.3, 0.3, 0.3)
+    for edge in road_plane_edges:
+        glVertex3fv(edge)
 
-    for edge in yellow_line_edges:
+    glEnd()
+    glFlush()
+
+def intersection_sidewalk():
+    glBegin(GL_QUADS)
+    glColor3f(0.7, 0.7, 0.7)
+    for edge in sidewalk_edges:
         glVertex3fv(edge)
 
     glEnd()
