@@ -17,7 +17,7 @@ sidewalk_edges = (
 
 def draw_road():
     draw_road_plane()
-    draw_road_intersection() #this function draws more than the road intersection as of now
+    draw_road_intersection()
 
 def draw_road_plane():
     segment_length = 10
@@ -26,7 +26,7 @@ def draw_road_plane():
     for i in range(left_segments):
         offset = i * segment_length
         glPushMatrix()
-        glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+        glTranslatef(-offset, 0, 0)
         side_walk()
         road_plane()
         glPopMatrix()
@@ -34,7 +34,7 @@ def draw_road_plane():
     for i in range(right_segments):
         offset = i * segment_length
         glPushMatrix()
-        glTranslatef(offset, 0, 0)  # Adjust position for each segment
+        glTranslatef(offset, 0, 0)
         side_walk()
         road_plane()
         glPopMatrix()
@@ -59,7 +59,7 @@ def draw_road_intersection():
     for i in range(left_segments):
        offset = i * segment_length + 10
        glPushMatrix()
-       glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+       glTranslatef(-offset, 0, 0)
        intersection_sidewalk()
        intersection_roads()
        glPopMatrix()
@@ -67,7 +67,7 @@ def draw_road_intersection():
     for i in range(right_segments):
        offset = i * segment_length + 10
        glPushMatrix()
-       glTranslatef(offset, 0, 0)  # Adjust position for each segment
+       glTranslatef(offset, 0, 0)
        intersection_sidewalk()
        intersection_roads()
        glPopMatrix()
@@ -86,7 +86,7 @@ def draw_road_intersection():
     for i in range(left_segments):
        offset = i * segment_length + 10
        glPushMatrix()
-       glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+       glTranslatef(-offset, 0, 0)
        intersection_sidewalk()
        intersection_roads()
        glPopMatrix()
@@ -94,7 +94,7 @@ def draw_road_intersection():
     for i in range(right_segments):
        offset = i * segment_length + 10
        glPushMatrix()
-       glTranslatef(offset, 0, 0)  # Adjust position for each segment
+       glTranslatef(offset, 0, 0)
        intersection_sidewalk()
        intersection_roads()
        glPopMatrix()
@@ -112,7 +112,7 @@ def draw_road_intersection():
     for i in range(left_segments):
        offset = i * segment_length + 10
        glPushMatrix()
-       glTranslatef(-offset, 0, 0)  # Adjust position for each segment
+       glTranslatef(-offset, 0, 0)
        side_walk()
        road_plane()
        glPopMatrix()
@@ -120,7 +120,7 @@ def draw_road_intersection():
     for i in range(right_segments+4):
        offset = i * segment_length + 10
        glPushMatrix()
-       glTranslatef(offset, 0, 0)  # Adjust position for each segment
+       glTranslatef(offset, 0, 0)
        side_walk()
        road_plane()
        glPopMatrix()
